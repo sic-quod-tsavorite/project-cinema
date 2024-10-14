@@ -1,36 +1,25 @@
-$text: #f5e7ee;
-$background: #17090f;
+@import url('https://fonts.googleapis.com/css?family=Outfit');
+
+//custom variables
 $primary: #ff6ab2;
 $secondary: #49d362;
-$accent: #28dbfe;
+$light: #f5e7ee;
+$dark: #17090f;
 
-@import url('https://fonts.googleapis.com/css?family=Outfit:700|Outfit:400');
+$border-radius: 1.5rem;
 
-body {
-    font-family: 'Outfit';
-    font-weight: 400;
-    background-color: $background;
-}
+$font-family-sans-serif: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-h1, h2, h3, h4, h5 {
-    font-family: 'Outfit';
-    font-weight: 700;
-}
+//import the functions & variables
+@import "../../node_modules/bootstrap/scss/_functions";
+@import "../../node_modules/bootstrap/scss/_variables";
 
-h1, h2, h3, h4, h5, small {
-    color: $text;
-}
+$custom-theme-colors: (
+    "accent": #28dbfe,
+    "transparent": transparent
+);
 
-html {font-size: 100%;} /* 16px */
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
 
-h1 {font-size: 4.210rem; /* 67.36px */}
-
-h2 {font-size: 3.158rem; /* 50.56px */}
-
-h3 {font-size: 2.369rem; /* 37.92px */}
-
-h4 {font-size: 1.777rem; /* 28.48px */}
-
-h5 {font-size: 1.333rem; /* 21.28px */}
-
-small {font-size: 0.750rem; /* 12px */}
+// import bootstrap
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
