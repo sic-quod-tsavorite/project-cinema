@@ -2,6 +2,21 @@
 require_once("../includes/functions/session.php");
 require_once("../includes/functions/connection.php");
 require_once("../includes/functions/functions.php");
+
+try {
+    $adquery = "SELECT userID, accountRank FROM useraccounts WHERE userID = :userID";
+    $stmt = $connection->prepare($adquery);
+    $stmt->bindParam(':userID', $_SESSION['user_id']);
+    $stmt->execute();
+    $adquery = $stmt->fetch(PDO::FETCH_ASSOC);
+    if(logged_in()) {
+        $isAdmin = $adquery['accountRank'];
+    };
+    
+} catch (PDOException $e) {
+    die("Database query failed: " . $e->getMessage());
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -51,3 +66,17 @@ require_once("../includes/functions/functions.php");
     </nav>
 
     </nav>
+
+    <?php
+        if(logged_in()) {
+            if($isAdmin == 1){
+                echo "the user is not admin - " . $adquery['accountRank'] . " -";
+            }
+            if($isAdmin == 0){
+                echo "the user is indeed admin - " . $adquery['accountRank'] . " -";
+            }
+        };
+        if(!logged_in()) {
+            echo "the user is not logged in";
+        };
+    ?>
