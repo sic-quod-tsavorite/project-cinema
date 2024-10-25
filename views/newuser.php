@@ -1,16 +1,16 @@
 <?php
 $page_title = "new user";
-include_once "../constants/header.php";
+include_once "./constants/header.php";
 ?>
 
 <?php
 // START FORM PROCESSING
 if (isset($_POST['submit'])) { // Form has been submitted.
 
-	// Perform validations on the form data
-	$username = trim($_POST['username']);
-	$password = trim($_POST['password']);
-	
+    // Perform validations on the form data
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
     // Hash the password with bcrypt and cost factor
     $iterations = ['cost' => 15];
     $hashed_password = password_hash($password, PASSWORD_BCRYPT, $iterations);
@@ -43,12 +43,12 @@ if (!empty($message)) {
 ?>
 <h2>Create New User</h2>
 
-<form action="" method="post">
-Username:
-<input type="text" name="username" maxlength="30" value="" />
-Password:
-<input type="password" name="password" maxlength="30" value="" />
-<input type="submit" name="submit" value="Create" />
+<form action="/project-cinema/new-user" method="post">
+    Username:
+    <input type="text" name="username" maxlength="30" value="" />
+    Password:
+    <input type="password" name="password" maxlength="30" value="" />
+    <input type="submit" name="submit" value="Create" />
 </form>
 
-<?php include_once "../constants/footer.php";    ?>
+<?php include_once "./constants/footer.php";    ?>

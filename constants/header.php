@@ -1,7 +1,7 @@
-<?php 
-require_once("../includes/functions/session.php");
-require_once("../includes/functions/connection.php");
-require_once("../includes/functions/functions.php");
+<?php
+require_once("./includes/functions/session.php");
+require_once("./includes/functions/connection.php");
+require_once("./includes/functions/functions.php");
 
 try {
     $adquery = "SELECT userID, accountRank FROM useraccounts WHERE userID = :userID";
@@ -9,10 +9,9 @@ try {
     $stmt->bindParam(':userID', $_SESSION['user_id']);
     $stmt->execute();
     $adquery = $stmt->fetch(PDO::FETCH_ASSOC);
-    if(logged_in()) {
+    if (logged_in()) {
         $isAdmin = $adquery['accountRank'];
     };
-    
 } catch (PDOException $e) {
     die("Database query failed: " . $e->getMessage());
 }
@@ -27,8 +26,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../includes/css/theme.css">
-    <link rel="stylesheet" href="../includes/css/style.css">
+    <link rel="stylesheet" href="./includes/css/theme.css">
+    <link rel="stylesheet" href="./includes/css/style.css">
 </head>
 
 <body class="bg-dark">
@@ -68,15 +67,15 @@ try {
     </nav>
 
     <?php
-        if(logged_in()) {
-            if($isAdmin == 1){
-                echo "the user is not admin - " . $adquery['accountRank'] . " -";
-            }
-            if($isAdmin == 0){
-                echo "the user is indeed admin - " . $adquery['accountRank'] . " -";
-            }
-        };
-        if(!logged_in()) {
-            echo "the user is not logged in";
-        };
+    if (logged_in()) {
+        if ($isAdmin == 1) {
+            echo "the user is not admin - " . $adquery['accountRank'] . " -";
+        }
+        if ($isAdmin == 0) {
+            echo "the user is indeed admin - " . $adquery['accountRank'] . " -";
+        }
+    };
+    if (!logged_in()) {
+        echo "the user is not logged in";
+    };
     ?>
