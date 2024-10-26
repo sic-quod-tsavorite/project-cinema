@@ -6,14 +6,16 @@ get('/project-cinema', 'views/index.php');
 
 get('/project-cinema/film-page', 'views/film-page.php');
 
-get('/project-cinema/new-user', 'views/newuser.php');
-post('/project-cinema/new-user', 'views/newuser.php');
-
 get('/project-cinema/login', 'views/login.php');
 post('/project-cinema/login', 'views/login.php');
 
-get('/project-cinema/logout', 'views/logout.php');
-post('/project-cinema/login/$logout=1', 'views/logout.php');
+get('/project-cinema/logout', 'constants/signout.php');
+post('/project-cinema', 'constants/signout.php');
+
+get('/project-cinema/account-page', 'views/account.php');
+
+get('/project-cinema/admin-board', 'views/dashboard.php');
+post('/project-cinema/admin-board', 'views/dashboard.php');
 
 
 //Error 404 page, this needs to be last

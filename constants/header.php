@@ -34,7 +34,7 @@ try {
     <nav class="navbar navbar-expand-lg sticky-top border-bottom border-light-subtle" id="header">
         <div class="container-fluid">
             <div>
-                <a class="navbar-brand" href="/project-cinema/views/index.php">LOGO</a>
+                <a class="navbar-brand" href="/project-cinema">LOGO</a>
             </div>
             <div><!--
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,8 +58,17 @@ try {
                 </div>-->
             </div>
             <div>
-                <button class="btn btn-accent bi bi-person-circle" type="button"></button>
-                <a class="btn btn-primary ms-2" type="button" href="/project-cinema/views/login.php">Log in</a>
+                <?php
+                if (!logged_in()) {
+                    echo '<a class="btn btn-primary ms-2" type="button" href="/project-cinema/login">Log in</a>';
+                } else {
+                    if ($isAdmin == 0) {
+                        echo '<a class="btn btn-accent bi bi-person-circle" type="button" href="/project-cinema/admin-board"> Admin Dashboard</a>';
+                    } else {
+                        echo '<a class="btn btn-accent bi bi-person-circle" type="button" href="/project-cinema/account-page"></a>';
+                    };
+                    echo '<a class="btn btn-primary ms-2" type="button" href="/project-cinema/logout">Log out</a>';
+                }; ?>
             </div>
         </div>
     </nav>

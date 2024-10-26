@@ -1,9 +1,4 @@
 <?php
-$page_title = "new user";
-include_once "./constants/header.php";
-?>
-
-<?php
 // START FORM PROCESSING
 if (isset($_POST['submit'])) { // Form has been submitted.
 
@@ -43,12 +38,10 @@ if (!empty($message)) {
 ?>
 <h2>Create New User</h2>
 
-<form action="/project-cinema/new-user" method="post">
+<form action="/project-cinema/login" method="post">
     Username:
     <input type="text" name="username" maxlength="30" value="" />
     Password:
     <input type="password" name="password" maxlength="30" value="" />
     <input type="submit" name="submit" value="Create" />
 </form>
-
-<?php include_once "./constants/footer.php";    ?>

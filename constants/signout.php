@@ -17,5 +17,5 @@ if (isset($_COOKIE[session_name()])) {
 // 4. Destroy the session
 session_destroy();
 
-redirect_to("/project-cinema/login?logout=1");
+redirect_to("/project-cinema");
 ?>

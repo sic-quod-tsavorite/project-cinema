@@ -24,11 +24,7 @@ CREATE TABLE Movies (
     heroimg VARCHAR(255),
     trailer VARCHAR(255),
     released DATE,
-    director VARCHAR(255),
-    actor INT,
-    tag INT,
-    FOREIGN KEY (actor) REFERENCES Actors(actorID),
-    FOREIGN KEY (tag) REFERENCES Tag(tagID)
+    director VARCHAR(255)
 ) ENGINE=InnoDB;
 
 CREATE TABLE ActorRole (
@@ -38,6 +34,14 @@ CREATE TABLE ActorRole (
     role VARCHAR(255),
     FOREIGN KEY (actorID) REFERENCES Actors(actorID),
     FOREIGN KEY (movieID) REFERENCES Movies(movieID)
+) ENGINE=InnoDB;
+
+CREATE TABLE MovieTags (
+    movie_tagID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    movieID INT NOT NULL,
+    tagID INT NOT NULL,
+    FOREIGN KEY (movieID) REFERENCES Movies(movieID),
+    FOREIGN KEY (tagID) REFERENCES Tag(tagID)
 ) ENGINE=InnoDB;
 
 CREATE TABLE UserAccounts (
@@ -60,6 +64,9 @@ insert into Movies (movieID, title, length, description, poster, heroimg, traile
 
 -- ActorRole data:
 insert into ActorRole (actor_roleID, actorID, movieID, role) values (NULL, 1, 1, 'Jim Hawkins');
+
+-- MovieTags data:
+insert into MovieTags (movie_tagID, movieID, tagID) values (NULL, 1, 1);
 
 -- UserAccounts data (password = username):
 insert into UserAccounts (userID, accountRank, username, password) values (NULL, 0, 'admin', '$2y$15$nm1n/tNyw6.Os0QL5IsQ9.8twjXF1kbbGU.N23.MlWaHzTaNK50py');

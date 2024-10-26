@@ -1,70 +1,35 @@
 <?php
-$page_title = "login";
+$page_title = "Login or sign up";
 include_once "./constants/header.php";
 if (logged_in()) {
 	redirect_to("/project-cinema/");
 };
 ?>
 
-<?php
-// START FORM PROCESSING
-if (isset($_POST['submit'])) { // Form has been submitted.
-	$username = trim($_POST['username']);
-	$password = trim($_POST['password']);
-
-	try {
-		// Prepare the SQL query using PDO
-		$query = "SELECT userID, username, password FROM useraccounts WHERE username = :username LIMIT 1";
-		$stmt = $connection->prepare($query);
-
-		// Bind the username parameter
-		$stmt->bindParam(':username', $username);
-		$stmt->execute();
-
-		// Fetch the result
-		$found_user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		if ($found_user) {
-			// Check if the password is correct
-			if (password_verify($password, $found_user['password'])) {
-				// Username/password authenticated
-				$_SESSION['user_id'] = $found_user['userID'];
-				$_SESSION['user'] = $found_user['username'];
-				redirect_to("/project-cinema/");
-			} else {
-				// Password is incorrect
-				$message = "Username/password combination incorrect.<br />
-					Please make sure your caps lock key is off and try again.";
-			}
-		} else {
-			// No user found
-			$message = "Username/password combination incorrect.<br />
-				Please make sure your caps lock key is off and try again.";
-		}
-	} catch (PDOException $e) {
-		die("Database query failed: " . $e->getMessage());
-	}
-} else { // Form has not been submitted.
-	if (isset($_GET['logout']) && $_GET['logout'] == 1) {
-		$message = "You are now logged out.";
-	}
-}
-
-// Display the message if set
-if (!empty($message)) {
-	echo "<p>" . $message . "</p>";
-}
-?>
-
-<h2>Please login</h2>
-<form action="/project-cinema/login" method="post">
-	Username:
-	<input type="text" name="username" maxlength="30" value="" />
-	Password:
-	<input type="password" name="password" maxlength="30" value="" />
-	<input type="submit" name="submit" value="Login" />
-</form>
-
-<?php include_once "newuser.php";    ?>
+<div class="container bg-primary-subtle rounded-3 p-5 my-5">
+	<nav class="navbar navbar-expand-lg">
+		<div class="container-fluid justify-content-center">
+			<ul class="nav" id="npu-tabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="np-tab"
+						data-bs-toggle="tab" data-bs-target="#signin" type="button" role="tab" aria-controls="signin" aria-selected="true">Log in</button>
+				</li>
+				<h4 class="mt-1 pe-none">|</h4>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link"
+						data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false">Create account</button>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="tab-content" id="npu-content">
+		<div id="signin" class="tab-pane fade show active" role="tabpanel" aria-labelledby="signin-tab" tabindex="0">
+			<?php include_once "./constants/signin.php"; ?>
+		</div>
+		<div id="signup" class="tab-pane fade" role="tabpanel" aria-labelledby="signup-tab" tabindex="0">
+			<?php include_once "./constants/signup.php"; ?>
+		</div>
+	</div>
+</div>
 
 <?php include_once "./constants/footer.php";    ?>
