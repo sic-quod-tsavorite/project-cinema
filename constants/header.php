@@ -3,18 +3,22 @@ require_once("./includes/functions/session.php");
 require_once("./includes/functions/connection.php");
 require_once("./includes/functions/functions.php");
 
-try {
-    $adquery = "SELECT userID, accountRank FROM useraccounts WHERE userID = :userID";
-    $stmt = $connection->prepare($adquery);
-    $stmt->bindParam(':userID', $_SESSION['user_id']);
-    $stmt->execute();
-    $adquery = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (logged_in()) {
+if (logged_in()) { // if logged in check account rank
+    try {
+        $adquery = "SELECT userID, accountRank FROM useraccounts WHERE userID = :userID";
+        $stmt = $connection->prepare($adquery);
+        $stmt->bindParam(':userID', $_SESSION['user_id']);
+        $stmt->execute();
+        $adquery = $stmt->fetch(PDO::FETCH_ASSOC);
+
         $isAdmin = $adquery['accountRank'];
-    };
-} catch (PDOException $e) {
-    die("Database query failed: " . $e->getMessage());
+    } catch (PDOException $e) {
+        die("Database query failed: " . $e->getMessage());
+    }
 }
+
+// router dynamic links causes issues so this is so I don't have to change link multiple places
+$base_url = "http://localhost/project-cinema";
 
 ?>
 
@@ -26,8 +30,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="./includes/css/theme.css">
-    <link rel="stylesheet" href="./includes/css/style.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/includes/css/theme.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/includes/css/style.css">
 </head>
 
 <body class="bg-dark">
@@ -36,29 +40,42 @@ try {
             <div>
                 <a class="navbar-brand" href="/project-cinema">LOGO</a>
             </div>
-            <div><!--
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Stop Motion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Hand-Drawn</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Computer 3D</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Modern 2D</a>
-                        </li>
-                    </ul>
-                </div>-->
-            </div>
             <div>
                 <?php
+                try {
+                    $tagQuery = "SELECT * FROM tag WHERE tagType = 1";
+                    $tagStmt = $connection->prepare($tagQuery);
+                    $tagStmt->execute();
+                    $mainTags = $tagStmt->fetchAll(PDO::FETCH_ASSOC);
+                } catch (PDOException $e) {
+                    die("Database query failed: " . $e->getMessage());
+                }
+
+                //create nav items but only show them in the header on other pages than the front page
+                $navitems = '
+                        <div id="categorys">
+                            <div>
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">';
+
+                // Loop through the fetched tags and create list items
+                foreach ($mainTags as $tag) {
+                    $navitems .= '<li class="nav-item">
+                                    <a class="nav-link" href="#">' . $tag['name'] . '</a>
+                                  </li>';
+                }
+
+                $navitems .= '</ul>
+                            </div>
+                        </div>
+                    ';
+
+                if ($page_title != "Front Page") {
+                    echo $navitems;
+                };
+                ?>
+            </div>
+            <div>
+                <?php //logic for login button
                 if (!logged_in()) {
                     echo '<a class="btn btn-primary ms-2" type="button" href="/project-cinema/login">Log in</a>';
                 } else {
@@ -75,7 +92,7 @@ try {
 
     </nav>
 
-    <?php
+    <?php //debug show user rank
     if (logged_in()) {
         if ($isAdmin == 1) {
             echo "the user is not admin - " . $adquery['accountRank'] . " -";

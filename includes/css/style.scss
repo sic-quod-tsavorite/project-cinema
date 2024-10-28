@@ -11,6 +11,9 @@
 #header {
   background-color: #16090ecc;
   backdrop-filter: blur(15px);
+  #categorys a {
+    backdrop-filter: none;
+  }
 }
 
 #categorys a {

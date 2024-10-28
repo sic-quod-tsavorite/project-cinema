@@ -2,10 +2,10 @@
 $page_title = "Account Page";
 include_once "./constants/header.php";
 if (logged_in()) {
-    if ($isAdmin == 0) {
+    if ($isAdmin == 0) { //if user is admin redirect to admin board
         redirect_to("/project-cinema/admin-board");
     };
-} else {
+} else { //if user is not logged in redirect to login page
     redirect_to("/project-cinema/login");
 };
 ?>

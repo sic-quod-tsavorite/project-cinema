@@ -11,6 +11,7 @@ CREATE TABLE Actors (
 CREATE TABLE Tag (
     tagID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     name VARCHAR(255),
+    tagType INT DEFAULT 2,
     short_description VARCHAR(255)
 ) ENGINE=InnoDB;
 
@@ -24,7 +25,9 @@ CREATE TABLE Movies (
     heroimg VARCHAR(255),
     trailer VARCHAR(255),
     released DATE,
-    director VARCHAR(255)
+    director VARCHAR(255),
+    isNews INT,
+    now_upcoming INT
 ) ENGINE=InnoDB;
 
 CREATE TABLE ActorRole (
@@ -55,15 +58,20 @@ CREATE TABLE UserAccounts (
 
 -- Actors data:
 insert into Actors (actorID, first_name, last_name) values (NULL, 'Joseph', 'Gordon-Levitt');
+insert into Actors (actorID, first_name, last_name) values (NULL, 'Emma', 'Thompson');
 
 -- Tag data:
-insert into Tag (tagID, name, short_description) values (NULL, 'Hand-Drawn', 'Hand-drawn animation, also known as traditional animation, is a technique in which each frame is created by hand. It involves the process of drawing individual images, known as frames or cels, by skilled animators and then photographing or filming them in sequence to create the illusion of motion.');
+insert into Tag (tagID, name, tagType, short_description) values (NULL, 'Hand-Drawn', 1, 'Hand-drawn animation, also known as traditional animation, is a technique in which each frame is created by hand. It involves the process of drawing individual images, known as frames or cels, by skilled animators and then photographing or filming them in sequence to create the illusion of motion.');
 
 -- Movies data:
-insert into Movies (movieID, title, length, description, poster, heroimg, trailer, released, director, actor, tag) values (NULL, 'Treasure Planet', NULL, 'Jim Hawkins is a teenager who finds the map of a great treasure hidden by a space pirate. Together with some friends, he sets off in a large spaceship, shaped like a caravel, on his quest.', NULL, NULL, NULL, '2002-11-29', 'Ron Clements', 1, 1);
+insert into Movies (movieID, title, length, description, poster, heroimg, trailer, released, director, isNews, now_upcoming) values (NULL, 'Treasure Planet', 95, 'Jim Hawkins is a teenager who finds the map of a great treasure hidden by a space pirate. Together with some friends, he sets off in a large spaceship, shaped like a caravel, on his quest.', 'includes/assets/uploads/posters/treasure-planet.jpg', 'includes/assets/uploads/heroimgs/treasure-planet-bg.jpg', 'includes/assets/uploads/trailers/TreasurePlanetTrailer.mp4', '2002-11-29', 'Ron Clements', 1, 1);
+insert into Movies (movieID, title, length, description, poster, heroimg, trailer, released, director, isNews, now_upcoming) values (NULL, 'The Nightmare Before Christmas', 76, 'Jack Skellington, king of Halloween Town, discovers Christmas Town, but his attempts to bring Christmas to his home causes confusion.', 'includes/assets/uploads/posters/tnbc.jpg', 'includes/assets/uploads/heroimgs/Nightmare-Before-Christmas-2-release-date-story-details.jpg', 'includes/assets/uploads/trailers/TheNightmareBeforeChristmasTrailer.mp4', '1994-12-02', 'Henry Selick', 1, 2);
+insert into Movies (movieID, title, length, description, poster, heroimg, trailer, released, director, isNews, now_upcoming) values (NULL, 'Shrek', 90, 'A mean lord exiles fairytale creatures to the swamp of a grumpy ogre, who must go on a quest and rescue a princess for the lord in order to get his land back.', 'includes/assets/uploads/posters/shrek.jpg', 'includes/assets/uploads/heroimgs/shrek-heroimg.jpg', 'includes/assets/uploads/trailers/ShrekTrailer.mp4', '2001-09-07', 'Andrew Adamson & Vicky Jenson', 1, 2);
+insert into Movies (movieID, title, length, description, poster, heroimg, trailer, released, director, isNews, now_upcoming) values (NULL, 'The Witcher: Nightmare of the Wolf', 83, 'Escaping from poverty to become a witcher, Vesemir slays monsters for coin and glory, but when a new menace rises, he must face the demons of his past.', 'includes/assets/uploads/posters/twnotw.jpg', 'includes/assets/uploads/heroimgs/wolf-heroimg.jpg', 'includes/assets/uploads/trailers/wolfTrailer.mp4', '2021-08-23', 'Kwang Il Han', 1, 1);
 
 -- ActorRole data:
 insert into ActorRole (actor_roleID, actorID, movieID, role) values (NULL, 1, 1, 'Jim Hawkins');
+insert into ActorRole (actor_roleID, actorID, movieID, role) values (NULL, 2, 1, 'Captain Amelia');
 
 -- MovieTags data:
 insert into MovieTags (movie_tagID, movieID, tagID) values (NULL, 1, 1);

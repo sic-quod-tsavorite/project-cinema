@@ -17,17 +17,17 @@ if (logged_in()) {
 				<h4 class="mt-1 pe-none">|</h4>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link"
-						data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false">Create account</button>
+						data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false">Sign up</button>
 				</li>
 			</ul>
 		</div>
 	</nav>
 	<div class="tab-content" id="npu-content">
 		<div id="signin" class="tab-pane fade show active" role="tabpanel" aria-labelledby="signin-tab" tabindex="0">
-			<?php include_once "./constants/signin.php"; ?>
+			<?php include_once "content/signin.php"; ?>
 		</div>
 		<div id="signup" class="tab-pane fade" role="tabpanel" aria-labelledby="signup-tab" tabindex="0">
-			<?php include_once "./constants/signup.php"; ?>
+			<?php include_once "content/signup.php"; ?>
 		</div>
 	</div>
 </div>
