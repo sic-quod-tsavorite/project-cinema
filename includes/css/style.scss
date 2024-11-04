@@ -1,3 +1,42 @@
+// Global
+#pg-content {
+  padding-top: 102px;
+}
+
+#header {
+  background-color: #16090ecc;
+  backdrop-filter: blur(15px);
+  .pix-logo img {
+    max-height: 85px;
+    animation: logo-size 1ms linear;
+    animation-timeline: scroll(block nearest);
+  }
+  #categorys a {
+    backdrop-filter: none;
+  }
+}
+@keyframes logo-size {
+  0% {
+    height: 85px;
+  }
+  5% {
+    height: 50px;
+  }
+  100% {
+    height: 50px;
+  }
+}
+
+footer {
+  width: 100%;
+  background-color: gray;
+}
+
+// Front Page
+#categorys a {
+  backdrop-filter: blur(2px);
+}
+
 .banner-img {
   width: 25%;
   height: 500px;
@@ -8,23 +47,14 @@
   }
 }
 
-#header {
-  background-color: #16090ecc;
-  backdrop-filter: blur(15px);
-  #categorys a {
-    backdrop-filter: none;
+#fp-nav {
+  height: 65px;
+  pointer-events: none;
+  z-index: 1031;
+  #categorys {
+    pointer-events: auto;
   }
 }
-
-#categorys a {
-  backdrop-filter: blur(2px);
-}
-
-footer {
-  width: 100%;
-  background-color: gray;
-}
-
 
 .film-content {
   width: 100%;
@@ -35,6 +65,29 @@ footer {
   }
 }
 
+// Admin Dashboard
+#editMovieModal .actor-input-group button {
+  margin: 0.5rem 0;
+}
+.actor-input-group {
+  & .form-check-input:checked {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  & button {
+    margin: 0.5rem 0 0.5rem auto;
+  }
+  &:last-child button {
+    margin: 0.5rem 0 calc(-0.5rem - 38px) auto;
+  }
+}
+
+.actor-input-group[data-actor-id="1"]:not(:first-child)
+  .form-check.form-switch {
+  display: none;
+}
+
+// Film Page
 #film-hero {
   img {
     width: 100%;
@@ -43,3 +96,8 @@ footer {
     pointer-events: none;
   }
 }
+
+// Tag Page
+/*.tag-page {
+  padding-top: 12px;
+}*/

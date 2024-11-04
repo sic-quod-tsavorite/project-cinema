@@ -1,5 +1,5 @@
 <?php
-$page_title = "Front Page";
+$page_title = "Piximation Cinema";
 include_once "./constants/header.php";
 
 try { // Select 4 movies with isNews = 1
@@ -20,7 +20,7 @@ try { // Select 4 movies with isNews = 1
     <?php endforeach; ?>
 </div>
 
-<nav class="navbar navbar-expand-lg bg-transparent sticky-top justify-content-center">
+<nav class="navbar navbar-expand-lg bg-transparent sticky-top justify-content-center" id="fp-nav">
     <?php echo $navitems;   ?>
 </nav>
 
@@ -40,7 +40,8 @@ try { // Select 4 movies with isNews = 1
             </ul>
         </div>
     </nav>
-    <?php include_once "./views/content/now_upcoming.php"; ?>
+
+    <?php include_once "./views/content/tb_now_upcoming.php"; ?>
 </div>
 
 <?php include_once "./constants/footer.php";    ?>

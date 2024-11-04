@@ -1,6 +1,5 @@
 <div class="tab-content" id="npu-content">
     <div id="nowplaying" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nowplaying-tab" tabindex="0">
-        calander
         <div class="container d-flex flex-column">
             <?php
             try {
@@ -45,14 +44,34 @@
                 }
 
                 $movieItem .= '      </ul>
-                                                    </p>
-                                                    <p>Genre: </p>
-                                                    <divider class="my-4">
-                                                    </divider>
-                                                    <p>Airings</p>
-                                                    timetable
-                                                </div>
-                                            </div>';
+                                </p>
+                                <p>Genre: 
+                                    <ul>';
+
+                try { // Show Genres
+                    $mtQuery = "SELECT t.name 
+                                  FROM tag t
+                                  INNER JOIN movietags mt ON t.tagID = mt.tagID
+                                  WHERE mt.movieID = :movieID";
+                    $stmt = $connection->prepare($mtQuery);
+                    $stmt->bindParam(':movieID', $movie['movieID']);
+                    $stmt->execute();
+                    $movieTags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    foreach ($movieTags as $mTag) {
+                        $movieItem .= '<li>' . $mTag['name'] . '</li>';
+                    }
+                } catch (PDOException $e) {
+                    die("Database query failed: " . $e->getMessage());
+                }
+
+                $movieItem .= '      </ul> </p>
+                                <divider class="my-4">
+                                </divider>
+                                <p>Airings</p>
+                                timetable
+                            </div>
+                        </div>';
 
                 echo $movieItem;
             };
@@ -104,14 +123,34 @@
                 }
 
                 $movieItem .= '      </ul>
-                                                    </p>
-                                                    <p>Genre: </p>
-                                                    <divider class="my-4">
-                                                    </divider>
-                                                    <p>Airings</p>
-                                                    timetable
-                                                </div>
-                                            </div>';
+                                </p>
+                                <p>Genre: 
+                                    <ul>';
+
+                try { // Show Genres
+                    $mtQuery = "SELECT t.name 
+                                  FROM tag t
+                                  INNER JOIN movietags mt ON t.tagID = mt.tagID
+                                  WHERE mt.movieID = :movieID";
+                    $stmt = $connection->prepare($mtQuery);
+                    $stmt->bindParam(':movieID', $movie['movieID']);
+                    $stmt->execute();
+                    $movieTags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    foreach ($movieTags as $mTag) {
+                        $movieItem .= '<li>' . $mTag['name'] . '</li>';
+                    }
+                } catch (PDOException $e) {
+                    die("Database query failed: " . $e->getMessage());
+                }
+
+                $movieItem .= '      </ul> </p>
+                                <divider class="my-4">
+                                </divider>
+                                <p>Airings</p>
+                                timetable
+                            </div>
+                        </div>';
 
                 echo $movieItem;
             };

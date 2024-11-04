@@ -48,8 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt->bindParam(':tagId', $tagIdToDelete);
         $stmt->execute();
 
-        // Redirect or display a success message
-        header("Location: /project-cinema/admin-board"); // Redirect to refresh the page
+        header("Location: /project-cinema/admin-board");
         exit();
     } catch (PDOException $e) {
         $tagMessage = "Error deleting tag: " . $e->getMessage();
@@ -72,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt->bindParam(':tagId', $tagIdToUpdate);
         $stmt->execute();
 
-        // Redirect or display a success message
         header("Location: /project-cinema/admin-board");
         exit();
     } catch (PDOException $e) {

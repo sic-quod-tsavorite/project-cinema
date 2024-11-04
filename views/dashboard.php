@@ -1,5 +1,5 @@
 <?php
-$page_title = "Admin Board";
+$page_title = "Admin Dashboard | Piximation Cinema";
 include_once "./constants/header.php";
 if (logged_in()) {
     if (!$isAdmin == 0) { //if user is not admin redirect to account page

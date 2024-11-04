@@ -1,5 +1,5 @@
 <?php
-$page_title = "Login or sign up";
+$page_title = "Login or sign up | Piximation Cinema";
 include_once "./constants/header.php";
 if (logged_in()) {
 	redirect_to("/project-cinema/");

@@ -1,7 +1,8 @@
 <?php
 // Dynamic page for movies
-$page_title = "Film Page";
-include_once "./constants/header.php";
+
+// Require connection earlier to create page title
+require_once("./includes/functions/connection.php");
 
 // Select the movie based on the $id from routes.php
 try {
@@ -13,6 +14,12 @@ try {
     die("Database query failed: " . $e->getMessage());
 }
 
+// Page title
+$page_title = $movies[0]['title'] . " | Piximation Cinema";
+
+// Head
+include_once "./constants/header.php";
+
 // Junction with actorrole table
 try {
     $query = "SELECT a.first_name, a.last_name, ar.role 
@@ -23,6 +30,20 @@ try {
     $stmt->bindParam(':movieID', $id);
     $stmt->execute();
     $actors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Database query failed: " . $e->getMessage());
+}
+
+// Junction with movietags table
+try {
+    $query = "SELECT t.name
+              FROM tag t
+              INNER JOIN movietags mt ON t.tagID = mt.tagID
+              WHERE mt.movieID = :movieID";
+    $stmt = $connection->prepare($query);
+    $stmt->bindParam(':movieID', $id);
+    $stmt->execute();
+    $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Database query failed: " . $e->getMessage());
 }
@@ -45,6 +66,12 @@ try {
         <ul>
             <?php foreach ($actors as $actor): ?>
                 <li><?php echo $actor['first_name'] . ' ' . $actor['last_name'] . ' - As: ' . $actor['role']; ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <h3>Genre:</h3>
+        <ul>
+            <?php foreach ($tags as $tag): ?>
+                <li><?php echo $tag['name']; ?></li>
             <?php endforeach; ?>
         </ul>
     </div>
