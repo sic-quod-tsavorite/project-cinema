@@ -9,8 +9,12 @@ if (isset($_POST['submit'])) { // Form has been submitted.
 		$query = "SELECT userID, username, password FROM useraccounts WHERE username = :username LIMIT 1";
 		$stmt = $connection->prepare($query);
 
+		// Sanitize input
+		$washUsername = htmlspecialchars($username);
+		$washPassword = htmlspecialchars($password);
+
 		// Bind the username parameter
-		$stmt->bindParam(':username', $username);
+		$stmt->bindParam(':username', $washUsername);
 		$stmt->execute();
 
 		// Fetch the result
@@ -18,11 +22,11 @@ if (isset($_POST['submit'])) { // Form has been submitted.
 
 		if ($found_user) {
 			// Check if the password is correct
-			if (password_verify($password, $found_user['password'])) {
+			if (password_verify($washPassword, $found_user['password'])) {
 				// Username/password authenticated
 				$_SESSION['user_id'] = $found_user['userID'];
 				$_SESSION['user'] = $found_user['username'];
-				redirect_to("/project-cinema/");
+				redirect_to( $base_url );
 			} else {
 				// Password is incorrect
 				$message = "Username/password combination incorrect.<br />
@@ -49,7 +53,7 @@ if (!empty($message)) {
 ?>
 
 <h2>Please login</h2>
-<form action="/project-cinema/login" method="post">
+<form action="<?php echo $base_url;?>/login" method="post">
 	Username:
 	<input type="text" name="username" maxlength="30" value="" />
 	Password:

@@ -2,10 +2,18 @@
   padding-top: 102px;
 }
 
+.alert.show {
+  display: block !important; /* Use !important to override any default styles */
+}
+
+.alert.hide {
+  display: none !important;
+}
+
 #header {
   background-color: rgba(22, 9, 14, 0.8);
   -webkit-backdrop-filter: blur(15px);
-          backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
 }
 #header .pix-logo img {
   max-height: 85px;
@@ -14,7 +22,7 @@
 }
 #header #categorys a {
   -webkit-backdrop-filter: none;
-          backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 @keyframes logo-size {
@@ -35,7 +43,7 @@ footer {
 
 #categorys a {
   -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .banner-img {
@@ -46,7 +54,7 @@ footer {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 
 #fp-nav {
@@ -82,7 +90,8 @@ footer {
   margin: 0.5rem 0 calc(-0.5rem - 38px) auto;
 }
 
-.actor-input-group[data-actor-id="1"]:not(:first-child) .form-check.form-switch {
+.actor-input-group[data-actor-id="1"]:not(:first-child)
+  .form-check.form-switch {
   display: none;
 }
 
@@ -95,4 +104,4 @@ footer {
 
 /*.tag-page {
   padding-top: 12px;
-}*//*# sourceMappingURL=style.css.map */
+}*/ /*# sourceMappingURL=style.css.map */

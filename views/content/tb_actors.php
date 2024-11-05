@@ -8,8 +8,12 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Create_actor') {
         $query = "INSERT INTO actors (first_name, last_name) VALUES (:firstname, :lastname)";
         $stmt = $connection->prepare($query);
 
-        $stmt->bindParam(':firstname', $firstname);
-        $stmt->bindParam(':lastname', $lastname);
+        // Sanitize input
+        $washFirstname = htmlspecialchars($firstname);
+        $washLastname = htmlspecialchars($lastname);
+
+        $stmt->bindParam(':firstname', $washFirstname);
+        $stmt->bindParam(':lastname', $washLastname);
 
         $result = $stmt->execute();
 
@@ -47,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt->execute();
 
         // Redirect or display a success message
-        header("Location: /project-cinema/admin-board"); // Redirect to refresh the page
+        header("Location: " . $base_url . "/admin-board"); // Redirect to refresh the page
         exit();
     } catch (PDOException $e) {
         $actorMessage = "Error deleting actor: " . $e->getMessage();
@@ -63,13 +67,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     try {
         $updateQuery = "UPDATE actors SET first_name = :firstName, last_name = :lastName WHERE actorID = :actorId";
         $stmt = $connection->prepare($updateQuery);
-        $stmt->bindParam(':firstName', $newFirstName);
-        $stmt->bindParam(':lastName', $newLastName);
+
+        // Sanitize input
+        $washNewFirstName = htmlspecialchars($newFirstName);
+        $washNewLastName = htmlspecialchars($newLastName);
+
+        $stmt->bindParam(':firstName', $washNewFirstName);
+        $stmt->bindParam(':lastName', $washNewLastName);
         $stmt->bindParam(':actorId', $actorIdToUpdate);
         $stmt->execute();
 
         // Redirect or display a success message
-        header("Location: /project-cinema/admin-board");
+        header("Location: " . $base_url . "/admin-board");
         exit();
     } catch (PDOException $e) {
         $actorMessage = "Error updating actor: " . $e->getMessage();
@@ -81,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 <div class="container">
     <h1>Actors:</h1>
 
-    <form action="/project-cinema/admin-board" method="POST">
+    <form action="<?php echo $base_url; ?>/admin-board" method="POST">
         <label for="firstname">First name:</label>
         <input type="text" name="firstname">
         <label for="lastname">Last name:</label>
@@ -97,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                 <span class="btn btn-light disabled btn-sm">ID: <?php echo $actor['actorID']; ?></span>
 
                 <!-- Delete Actor Form -->
-                <form action="/project-cinema/admin-board" method="POST" style="display: inline;">
+                <form action="<?php echo $base_url;?>/admin-board" method="POST" style="display: inline;">
                     <input type="hidden" name="actor_id" value="<?php echo $actor['actorID']; ?>">
                     <input type="hidden" name="action" value="delete_actor">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -117,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
-                            <form action="/project-cinema/admin-board" method="POST" style="display: inline;" class="modal-body">
+                            <form action="<?php echo $base_url;?>/admin-board" method="POST" style="display: inline;" class="modal-body">
                                 <input type="hidden" name="actor_id" value="<?php echo $actor['actorID']; ?>">
                                 <input type="hidden" name="action" value="update_actor">
                                 <label for="firstname">First Name:</label>

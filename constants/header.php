@@ -3,6 +3,8 @@ require_once("./includes/functions/session.php");
 require_once("./includes/functions/connection.php");
 require_once("./includes/functions/functions.php");
 
+$connection = createConnection();
+
 if (logged_in()) { // if logged in check account rank
     try {
         $adquery = "SELECT userID, accountRank FROM useraccounts WHERE userID = :userID";
@@ -16,10 +18,6 @@ if (logged_in()) { // if logged in check account rank
         die("Database query failed: " . $e->getMessage());
     }
 }
-
-// router dynamic links causes issues so this is so I don't have to change link multiple places
-$base_url = "http://localhost/project-cinema";
-
 ?>
 
 <!DOCTYPE html>
@@ -82,14 +80,14 @@ $base_url = "http://localhost/project-cinema";
                 <div>
                     <?php //logic for login button
                     if (!logged_in()) {
-                        echo '<a class="btn btn-primary ms-2" type="button" href="/project-cinema/login">Log in</a>';
+                        echo '<a class="btn btn-primary ms-2" type="button" href="' . $base_url . '/login">Log in</a>';
                     } else {
                         if ($isAdmin == 0) {
-                            echo '<a class="btn btn-accent bi bi-person-circle" type="button" href="/project-cinema/admin-board"> Admin Dashboard</a>';
+                            echo '<a class="btn btn-accent bi bi-person-circle" type="button" href="' . $base_url . '/admin-board"> Admin Dashboard</a>';
                         } else {
-                            echo '<a class="btn btn-accent bi bi-person-circle" type="button" href="/project-cinema/account-page"></a>';
+                            echo '<a class="btn btn-accent bi bi-person-circle" type="button" href="' . $base_url . '/account-page"></a>';
                         };
-                        echo '<a class="btn btn-primary ms-2" type="button" href="/project-cinema/logout">Log out</a>';
+                        echo '<a class="btn btn-primary ms-2" type="button" href="' . $base_url . '/logout">Log out</a>';
                     }; ?>
                 </div>
             </div>

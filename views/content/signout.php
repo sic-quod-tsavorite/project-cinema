@@ -1,4 +1,6 @@
-<?php require_once("././includes/functions/functions.php"); ?>
+<?php require_once("././includes/functions/functions.php");
+include_once "./constants/header.php";
+?>
 <?php
 // Four steps to closing a session
 // (i.e. logging out)
@@ -17,5 +19,5 @@ if (isset($_COOKIE[session_name()])) {
 // 4. Destroy the session
 session_destroy();
 
-redirect_to("/project-cinema");
+redirect_to( $base_url );
 ?>

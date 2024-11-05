@@ -12,25 +12,77 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Create_movie') {
     // Movie Poster image upload
     $poster = '';
     if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
-        $targetDir = "includes/assets/uploads/posters/";
-        $poster = $targetDir . basename($_FILES["poster"]["name"]);
-        move_uploaded_file($_FILES["poster"]["tmp_name"], $poster);
+        if (($_FILES['poster']['type'] == 'image/jpeg')
+            || ($_FILES['poster']['type'] == 'image/png')
+            || ($_FILES['poster']['type'] == 'image/jpg')
+            || ($_FILES['poster']['type'] == 'image/pjpeg')
+            || ($_FILES['poster']['type'] == 'image/webp')
+            && ($_FILES['poster']['size'] <= 5242880) // 5 MiB file size limit
+        ) {
+            // Extra MIME Type Validation
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $_FILES['poster']['tmp_name']);
+            finfo_close($finfo);
+            $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg', 'image/webp'];
+
+            if (in_array($mimeType, $allowedMimeTypes)) {
+                $targetDir = "includes/assets/uploads/posters/";
+                $poster = $targetDir . basename($_FILES["poster"]["name"]);
+                move_uploaded_file($_FILES["poster"]["tmp_name"], $poster);
+            } else {
+                echo "Error: Invalid poster file type. MIME type '$mimeType' is not allowed.";
+            }
+        }
     }
 
     // Movie hero image upload
     $heroimg = '';
     if (isset($_FILES['heroimg']) && $_FILES['heroimg']['error'] === UPLOAD_ERR_OK) {
-        $targetDir = "includes/assets/uploads/heroimgs/";
-        $heroimg = $targetDir . basename($_FILES["heroimg"]["name"]);
-        move_uploaded_file($_FILES["heroimg"]["tmp_name"], $heroimg);
+        if (($_FILES['heroimg']['type'] == 'image/jpeg')
+            || ($_FILES['heroimg']['type'] == 'image/png')
+            || ($_FILES['heroimg']['type'] == 'image/jpg')
+            || ($_FILES['heroimg']['type'] == 'image/pjpeg')
+            || ($_FILES['heroimg']['type'] == 'image/webp')
+            && ($_FILES['heroimg']['size'] <= 10485760) // 10 MiB file size limit
+        ) {
+            // Extra MIME Type Validation
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $_FILES['heroimg']['tmp_name']);
+            finfo_close($finfo);
+            $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg', 'image/webp'];
+
+            if (in_array($mimeType, $allowedMimeTypes)) {
+                $targetDir = "includes/assets/uploads/heroimgs/";
+                $heroimg = $targetDir . basename($_FILES["heroimg"]["name"]);
+                move_uploaded_file($_FILES["heroimg"]["tmp_name"], $heroimg);
+            } else {
+                echo "Error: Invalid hero image file type. MIME type '$mimeType' is not allowed.";
+            }
+        }
     }
 
     // Movie trailer video upload
     $trailer = '';
     if (isset($_FILES['trailer']) && $_FILES['trailer']['error'] === UPLOAD_ERR_OK) {
-        $targetDir = "includes/assets/uploads/trailers/";
-        $trailer = $targetDir . basename($_FILES["trailer"]["name"]);
-        move_uploaded_file($_FILES["trailer"]["tmp_name"], $trailer);
+        if (($_FILES['trailer']['type'] == 'video/mp4')
+            || ($_FILES['trailer']['type'] == 'video/webm')
+            || ($_FILES['trailer']['type'] == 'video/ogg')
+            && ($_FILES['trailer']['size'] <= 52428800) // 50 MiB file size limit
+        ) {
+            // Extra MIME Type Validation
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $_FILES['trailer']['tmp_name']);
+            finfo_close($finfo);
+            $allowedMimeTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+
+            if (in_array($mimeType, $allowedMimeTypes)) {
+                $targetDir = "includes/assets/uploads/trailers/";
+                $trailer = $targetDir . basename($_FILES["trailer"]["name"]);
+                move_uploaded_file($_FILES["trailer"]["tmp_name"], $trailer);
+            } else {
+                echo "Error: Invalid trailer file type. MIME type '$mimeType' is not allowed.";
+            }
+        }
     }
 
     // Create Movie to database
@@ -39,16 +91,29 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Create_movie') {
                   VALUES (:title, :length, :description, :poster, :heroimg, :trailer, :released, :director, :isNews, :now_upcoming)";
         $stmt = $connection->prepare($query);
 
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':length', $length);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':poster', $poster);
-        $stmt->bindParam(':heroimg', $heroimg);
-        $stmt->bindParam(':trailer', $trailer);
-        $stmt->bindParam(':released', $released);
-        $stmt->bindParam(':director', $director);
-        $stmt->bindParam(':isNews', $isNews);
-        $stmt->bindParam(':now_upcoming', $now_upcoming);
+        // Sanitize input
+        $washTitle = htmlspecialchars($title);
+        $washLength = htmlspecialchars($length);
+        $washDescription = htmlspecialchars($description);
+        $washPoster = htmlspecialchars($poster);
+        $washHeroimg = htmlspecialchars($heroimg);
+        $washTrailer = htmlspecialchars($trailer);
+        $washReleased = htmlspecialchars($released);
+        $washDirector = htmlspecialchars($director);
+        $washIsNews = htmlspecialchars($isNews);
+        $washNowUpcoming = htmlspecialchars($now_upcoming);
+
+        // Bind parameters
+        $stmt->bindParam(':title', $washTitle);
+        $stmt->bindParam(':length', $washLength);
+        $stmt->bindParam(':description', $washDescription);
+        $stmt->bindParam(':poster', $washPoster);
+        $stmt->bindParam(':heroimg', $washHeroimg);
+        $stmt->bindParam(':trailer', $washTrailer);
+        $stmt->bindParam(':released', $washReleased);
+        $stmt->bindParam(':director', $washDirector);
+        $stmt->bindParam(':isNews', $washIsNews);
+        $stmt->bindParam(':now_upcoming', $washNowUpcoming);
 
         /* exit if there would be more than 4 movies marked as news with this created movie.
         if (isset($_POST['isNews']) && $_POST['isNews'] == '1') {
@@ -63,7 +128,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Create_movie') {
         }
         */
 
-        $isNews = isset($_POST['isNews']) ? 1 : 0;
+        $washIsNews = isset($_POST['isNews']) ? 1 : 0;
 
         $result = $stmt->execute();
 
@@ -97,7 +162,11 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Create_movie') {
                             $insertActorRoleStmt = $connection->prepare($insertActorRoleQuery);
                             $insertActorRoleStmt->bindParam(':movieID', $insertedMovieId);
                             $insertActorRoleStmt->bindParam(':actorID', $actorIds[$i]);
-                            $insertActorRoleStmt->bindParam(':role', $roles[$i]);
+
+                            // Sanitize input
+                            $washRoles = htmlspecialchars($roles[$i]);
+
+                            $insertActorRoleStmt->bindParam(':role', $washRoles);
                             $insertActorRoleStmt->execute();
                         } catch (PDOException $e) {
                             error_log("Error inserting actor role: " . $e->getMessage());
@@ -169,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt->bindParam(':movieId', $movieIdToDelete);
         $stmt->execute();
 
-        header("Location: /project-cinema/admin-board");
+        header("Location: " . $base_url . "/admin-board");
         exit();
     } catch (PDOException $e) {
         $movieMessage = "Error deleting movie: " . $e->getMessage();
@@ -208,16 +277,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                           WHERE movieID = :movieId";
 
         $stmt = $connection->prepare($updateQuery);
-        $stmt->bindParam(':title', $newTitle);
-        $stmt->bindParam(':length', $newLength);
-        $stmt->bindParam(':description', $newDescription);
-        $stmt->bindParam(':poster', $posterPath);
-        $stmt->bindParam(':heroimg', $heroimgPath);
-        $stmt->bindParam(':trailer', $trailerPath);
-        $stmt->bindParam(':released', $newReleased);
-        $stmt->bindParam(':director', $newDirector);
-        $stmt->bindParam(':isNews', $newIsNews);
-        $stmt->bindParam(':now_upcoming', $newNowUpcoming);
+
+        // Sanitize input
+        $washNewTitle = htmlspecialchars($newTitle);
+        $washNewLength = htmlspecialchars($newLength);
+        $washNewDescription = htmlspecialchars($newDescription);
+        $washNewPoster = htmlspecialchars($posterPath);
+        $washNewHeroimg = htmlspecialchars($heroimgPath);
+        $washNewTrailer = htmlspecialchars($trailerPath);
+        $washNewReleased = htmlspecialchars($newReleased);
+        $washNewDirector = htmlspecialchars($newDirector);
+        $washNewIsNews = htmlspecialchars($newIsNews);
+        $washNewNowUpcoming = htmlspecialchars($newNowUpcoming);
+
+        $stmt->bindParam(':title', $washNewTitle);
+        $stmt->bindParam(':length', $washNewLength);
+        $stmt->bindParam(':description', $washNewDescription);
+        $stmt->bindParam(':poster', $washNewPoster);
+        $stmt->bindParam(':heroimg', $washNewHeroimg);
+        $stmt->bindParam(':trailer', $washNewTrailer);
+        $stmt->bindParam(':released', $washNewReleased);
+        $stmt->bindParam(':director', $washNewDirector);
+        $stmt->bindParam(':isNews', $washNewIsNews);
+        $stmt->bindParam(':now_upcoming', $washNewNowUpcoming);
         $stmt->bindParam(':movieId', $movieIdToUpdate);
 
         $stmt->execute();
@@ -270,7 +352,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                     $insertActorRoleStmt = $connection->prepare($insertActorRoleQuery);
                     $insertActorRoleStmt->bindParam(':movieID', $movieIdToUpdate);
                     $insertActorRoleStmt->bindParam(':actorID', $actorIds[$i]);
-                    $insertActorRoleStmt->bindParam(':role', $roles[$i]);
+
+                    // Sanitize input
+                    $washRoles = htmlspecialchars($roles[$i]);
+
+                    $insertActorRoleStmt->bindParam(':role', $washRoles);
                     $insertActorRoleStmt->execute();
                 }
             }
@@ -278,30 +364,77 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     } catch (PDOException $e) {
         $movieMessage = "Error updating movie: " . $e->getMessage();
     }
-    header("Location: /project-cinema/admin-board");
+    header("Location: " . $base_url . "/admin-board");
     exit();
 }
 
-// Function for file uploads
+// Function for file uploads in edit/update
 function handleFileUpload($fieldName, $subfolder, $movieId)
 {
-    // Check if a file was uploaded for this field
+    // Allowed file extensions
+    $allowedExtensions = [
+        'poster'  => ['jpg', 'jpeg', 'png', 'pjpeg', 'webp'],
+        'heroimg' => ['jpg', 'jpeg', 'png', 'pjpeg', 'webp'],
+        'trailer' => ['mp4', 'webm', 'ogg']
+    ];
+
+    // Max file size
+    $maxSize = [
+        'poster'  => 5242880,   // 5  MiB
+        'heroimg' => 10485760,  // 10 MiB
+        'trailer' => 52428800   // 50 MiB
+    ];
+
+    // Check if a file was uploaded
     if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES[$fieldName]['tmp_name'];
+        $fileName = $_FILES[$fieldName]['name'];
+        $fileSize = $_FILES[$fieldName]['size'];
+        $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        // File Extension Validation
+        if (!in_array($fileType, $allowedExtensions[$fieldName])) {
+            echo "Error: Only " . implode(", ", $allowedExtensions[$fieldName]) . " files are allowed for $fieldName.";
+            return '';
+        }
+
+        // File Size Validation
+        if ($fileSize > $maxSize[$fieldName]) {
+            echo "Error: File size exceeds the allowed limit (" . ($maxSize[$fieldName] / (1024 * 1024)) . " MiB) for $fieldName.";
+            return '';
+        }
+
+        // (Extra) MIME Type Validation
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $fileTmpPath);
+        finfo_close($finfo);
+
+        // Allowed MIME types
+        $allowedMimeTypes = [
+            'poster'  => ['image/jpeg', 'image/png', 'image/webp'],
+            'heroimg' => ['image/jpeg', 'image/png', 'image/webp'],
+            'trailer' => ['video/mp4', 'video/webm', 'video/ogg']
+        ];
+
+        if (!in_array($mimeType, $allowedMimeTypes[$fieldName])) {
+            echo "Error: Invalid file type. MIME type '$mimeType' is not allowed for $fieldName.";
+            return '';
+        }
+
+        // If all validations pass, proceed with moving the file
         $targetDir = "includes/assets/uploads/$subfolder/";
-        $newFileName = $movieId . '_' . basename($_FILES[$fieldName]["name"]); // Unique filename
+        $newFileName = $movieId . '_' . $fileName;
         $targetFile = $targetDir . $newFileName;
 
-        // Move uploaded file to directory
-        if (move_uploaded_file($_FILES[$fieldName]["tmp_name"], $targetFile)) {
-            return $targetFile; // Return new file path
+        if (move_uploaded_file($fileTmpPath, $targetFile)) {
+            return $targetFile;
         } else {
-            // if upload error
             echo "Sorry, there was an error uploading your file.";
-            return ''; // Return empty string on error
+            return '';
         }
     } else {
-        // if no file uploaded keep the existing path
-        return $_POST[$fieldName];
+        // If no file uploaded, keep the existing path
+        return $_POST[$fieldName] ?? '';
     }
 }
 ?>
@@ -320,13 +453,16 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
         <textarea name="description"></textarea><br>
 
         <label for="poster">Poster:</label>
-        <input type="file" name="poster"><br>
+        <div id="posterError" class="alert alert-danger" style="display: none;"></div>
+        <input type="file" accept="image/jpeg, image/png, image/jpg, image/pjpeg, image/webp" name="poster"><br>
 
         <label for="heroimg">Hero Image:</label>
-        <input type="file" name="heroimg"><br>
+        <div id="heroimgError" class="alert alert-danger" style="display: none;"></div>
+        <input type="file" accept="image/jpeg, image/png, image/jpg, image/pjpeg, image/webp" name="heroimg"><br>
 
         <label for="trailer">Trailer:</label>
-        <input type="file" name="trailer"><br>
+        <div id="trailerError" class="alert alert-danger" style="display: none;"></div>
+        <input type="file" accept="video/mp4, video/webm, video/ogg" name="trailer"><br>
 
         <label for="released">Released Date:</label>
         <input type="date" name="released"><br>
@@ -623,7 +759,8 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
                                         <label for="poster" class="form-label">Poster:</label>
                                         <img id="posterPreview<?php echo $movie['movieID']; ?>" src="<?php echo $movie['poster']; ?>" alt="<?php echo $movie['title'] . ' Poster'; ?>" height="100">
                                         <input type="hidden" name="poster" value="<?php echo $movie['poster']; ?>">
-                                        <input class="form-control" type="file" name="poster" onchange="previewFile(this, 'posterPreview<?php echo $movie['movieID']; ?>')">
+                                        <input class="form-control" type="file" accept="image/jpeg, image/png, image/jpg, image/pjpeg, image/webp" name="poster" onchange="previewFile(this, 'posterPreview<?php echo $movie['movieID']; ?>')">
+                                        <div id="posterError<?php echo $movie['movieID']; ?>" class="alert alert-danger hide"></div>
                                     </div>
 
                                     <!-- Heroimg select new and preview -->
@@ -631,7 +768,8 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
                                         <label for="heroimg" class="form-label">Hero Image:</label>
                                         <img id="heroimgPreview<?php echo $movie['movieID']; ?>" src="<?php echo $movie['heroimg']; ?>" alt="<?php echo $movie['title'] . ' Heroimg'; ?>" height="100">
                                         <input type="hidden" name="heroimg" value="<?php echo $movie['heroimg']; ?>">
-                                        <input class="form-control" type="file" name="heroimg" onchange="previewFile(this, 'heroimgPreview<?php echo $movie['movieID']; ?>')">
+                                        <input class="form-control" type="file" accept="image/jpeg, image/png, image/jpg, image/pjpeg, image/webp" name="heroimg" onchange="previewFile(this, 'heroimgPreview<?php echo $movie['movieID']; ?>')">
+                                        <div id="heroimgError<?php echo $movie['movieID']; ?>" class="alert alert-danger hide"></div>
                                     </div>
 
                                     <!-- Trailer select new and preview -->
@@ -641,12 +779,13 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
                                             <source src="<?php echo $movie['trailer']; ?>" type="video/mp4">
                                         </video>
                                         <input type="hidden" name="trailer" value="<?php echo $movie['trailer']; ?>">
-                                        <input class="form-control" type="file" name="trailer">
+                                        <input class="form-control" type="file" accept="video/mp4, video/webm, video/ogg" name="trailer">
+                                        <div id="trailerError<?php echo $movie['movieID']; ?>" class="alert alert-danger hide"></div>
                                     </div>
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close without saving</button>
-                                        <button type="submit" class="btn btn-warning btn-sm">Update</button>
+                                        <button type="submit" class="btn btn-warning btn-sm" value="update_movie">Update</button>
                                     </div>
 
                                 </form>

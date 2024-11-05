@@ -1,160 +1,100 @@
-<div class="tab-content" id="npu-content">
-    <div id="nowplaying" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nowplaying-tab" tabindex="0">
-        <div class="container d-flex flex-column">
+<?php
+require_once("./includes/functions/connection.php");
+
+function displayMovies($nowUpcomingValue, $connection, $tagID = null) { 
+    global $base_url;
+
+    try {
+        // Build the SQL query based on whether $tagID is provided
+        if ($tagID) {
+            $movieQuery = "SELECT m.* 
+                           FROM movies m
+                           INNER JOIN movietags mt ON m.movieID = mt.movieID
+                           WHERE mt.tagID = :tagID AND m.now_upcoming = :nowUpcoming";
+        } else {
+            $movieQuery = "SELECT * FROM movies WHERE now_upcoming = :nowUpcoming";
+        }
+
+        $movieStmt = $connection->prepare($movieQuery);
+        $movieStmt->bindParam(':nowUpcoming', $nowUpcomingValue, PDO::PARAM_INT);
+
+        // Bind :tagID only if it's provided
+        if ($tagID) {
+            $movieStmt->bindParam(':tagID', $tagID, PDO::PARAM_INT);
+        }
+
+        $movieStmt->execute();
+        $movies = $movieStmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($movies as $movie) {
+            $hours = floor($movie['length'] / 60);
+            $minutes = $movie['length'] % 60;
+            ?> 
+            <div class="item d-flex flex-row mb-5">
+                <a class="img me-5" href="<?php echo $base_url; ?>/movie/id/<?php echo $movie['movieID']; ?>">
+                    <img src="<?php echo $base_url . '/' . $movie['poster']; ?>" alt="<?php echo $movie['title']; ?>">
+                </a>
+                <div class="film-content">
+                    <a class="h3 link-underline link-underline-opacity-0" href="<?php echo $base_url; ?>/movie/id/<?php echo $movie['movieID']; ?>">
+                        <?php echo $movie['title']; ?>
+                    </a>
+                    <h5><?php echo $hours; ?>h <?php echo $minutes; ?>min</h5>
+                    <p>Director: <?php echo $movie['director']; ?></p>
+                    <p>Actor:
+                        <ul>
+                            <?php
+                            try { // Show 4 Actors
+                                $maQuery = "SELECT a.first_name, a.last_name, ar.role 
+                                              FROM actors a
+                                              INNER JOIN actorrole ar ON a.actorID = ar.actorID
+                                              WHERE ar.movieID = :movieID
+                                              LIMIT 4";
+                                $stmt = $connection->prepare($maQuery);
+                                $stmt->bindParam(':movieID', $movie['movieID']);
+                                $stmt->execute();
+                                $movieActors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                foreach ($movieActors as $mActor) {
+                                    echo '<li>' . $mActor['first_name'] . ' ' . $mActor['last_name'] . ' - As: ' . $mActor['role'] . '</li>';
+                                }
+                            } catch (PDOException $e) {
+                                die("Database query failed: " . $e->getMessage());
+                            }
+                            ?>
+                        </ul>
+                    </p>
+                    <p>Genre:
+                        <ul>
+                            <?php
+                            try { // Show Genres
+                                $mtQuery = "SELECT t.name, t.tagID
+                                              FROM tag t
+                                              INNER JOIN movietags mt ON t.tagID = mt.tagID
+                                              WHERE mt.movieID = :movieID";
+                                $stmt = $connection->prepare($mtQuery);
+                                $stmt->bindParam(':movieID', $movie['movieID']);
+                                $stmt->execute();
+                                $movieTags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                foreach ($movieTags as $mTag) {
+                                    echo '<li><a class="link-offset-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="' . $base_url . '/tag/id/' . $mTag['tagID'] . '">' . $mTag['name'] . '</a></li>';
+                                }
+                            } catch (PDOException $e) {
+                                die("Database query failed: " . $e->getMessage());
+                            }
+                            ?>
+                        </ul>
+                    </p>
+                    <divider class="my-4">
+                    </divider>
+                    <p>Airings</p>
+                    timetable 
+                </div>
+            </div>
             <?php
-            try {
-                $movieQuery = "SELECT * FROM movies WHERE now_upcoming = 1";
-                $movieStmt = $connection->prepare($movieQuery);
-                $movieStmt->execute();
-                $movies = $movieStmt->fetchAll(PDO::FETCH_ASSOC);
-            } catch (PDOException $e) {
-                die("Database query failed: " . $e->getMessage());
-            }
+        } 
 
-            foreach ($movies as $movie) {
-                $hours = floor($movie['length'] / 60);
-                $minutes = $movie['length'] % 60;
-                $movieItem = '
-                        <div class="item d-flex flex-row mb-5">
-                            <div class="img me-5">
-                                <img src="' . $movie['poster'] . '" alt="' . $movie['title'] . '">
-                            </div>
-                            <div class="film-content">
-                                <h3>' . $movie['title'] . '</h3>
-                                <h5>' . $hours . 'h ' . $minutes . 'min</h5>
-                                <p>Director: ' . $movie['director'] . '</p>
-                                <p>Actor: 
-                                    <ul>';
-                try { // Show 4 Actors
-                    $maQuery = "SELECT a.first_name, a.last_name, ar.role 
-                                                  FROM actors a
-                                                  INNER JOIN actorrole ar ON a.actorID = ar.actorID
-                                                  WHERE ar.movieID = :movieID
-                                                  LIMIT 4";
-                    $stmt = $connection->prepare($maQuery);
-                    $stmt->bindParam(':movieID', $movie['movieID']);
-                    $stmt->execute();
-                    $movieActors = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                    foreach ($movieActors as $mActor) {
-                        $movieItem .= '<li>' . $mActor['first_name'] . ' ' . $mActor['last_name'] . ' - As: ' . $mActor['role'] . '</li>';
-                    }
-                } catch (PDOException $e) {
-                    die("Database query failed: " . $e->getMessage());
-                }
-
-                $movieItem .= '      </ul>
-                                </p>
-                                <p>Genre: 
-                                    <ul>';
-
-                try { // Show Genres
-                    $mtQuery = "SELECT t.name 
-                                  FROM tag t
-                                  INNER JOIN movietags mt ON t.tagID = mt.tagID
-                                  WHERE mt.movieID = :movieID";
-                    $stmt = $connection->prepare($mtQuery);
-                    $stmt->bindParam(':movieID', $movie['movieID']);
-                    $stmt->execute();
-                    $movieTags = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                    foreach ($movieTags as $mTag) {
-                        $movieItem .= '<li>' . $mTag['name'] . '</li>';
-                    }
-                } catch (PDOException $e) {
-                    die("Database query failed: " . $e->getMessage());
-                }
-
-                $movieItem .= '      </ul> </p>
-                                <divider class="my-4">
-                                </divider>
-                                <p>Airings</p>
-                                timetable
-                            </div>
-                        </div>';
-
-                echo $movieItem;
-            };
-            ?>
-        </div>
-    </div>
-    <div id="upcoming" class="tab-pane fade" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
-        <div class="container d-flex flex-column">
-            <?php
-            try {
-                $movieQuery = "SELECT * FROM movies WHERE now_upcoming = 2";
-                $movieStmt = $connection->prepare($movieQuery);
-                $movieStmt->execute();
-                $movies = $movieStmt->fetchAll(PDO::FETCH_ASSOC);
-            } catch (PDOException $e) {
-                die("Database query failed: " . $e->getMessage());
-            }
-
-            foreach ($movies as $movie) {
-                $hours = floor($movie['length'] / 60);
-                $minutes = $movie['length'] % 60;
-                $movieItem = '
-                        <div class="item d-flex flex-row mb-5">
-                            <div class="img me-5">
-                                <img src="' . $movie['poster'] . '" alt="' . $movie['title'] . '">
-                            </div>
-                            <div class="film-content">
-                                <h3>' . $movie['title'] . '</h3>
-                                <h5>' . $hours . 'h ' . $minutes . 'min</h5>
-                                <p>Director: ' . $movie['director'] . '</p>
-                                <p>Actor: 
-                                    <ul>';
-                try { // Show 4 Actors
-                    $maQuery = "SELECT a.first_name, a.last_name, ar.role 
-                                                  FROM actors a
-                                                  INNER JOIN actorrole ar ON a.actorID = ar.actorID
-                                                  WHERE ar.movieID = :movieID
-                                                  LIMIT 4";
-                    $stmt = $connection->prepare($maQuery);
-                    $stmt->bindParam(':movieID', $movie['movieID']);
-                    $stmt->execute();
-                    $movieActors = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                    foreach ($movieActors as $mActor) {
-                        $movieItem .= '<li>' . $mActor['first_name'] . ' ' . $mActor['last_name'] . ' - As: ' . $mActor['role'] . '</li>';
-                    }
-                } catch (PDOException $e) {
-                    die("Database query failed: " . $e->getMessage());
-                }
-
-                $movieItem .= '      </ul>
-                                </p>
-                                <p>Genre: 
-                                    <ul>';
-
-                try { // Show Genres
-                    $mtQuery = "SELECT t.name 
-                                  FROM tag t
-                                  INNER JOIN movietags mt ON t.tagID = mt.tagID
-                                  WHERE mt.movieID = :movieID";
-                    $stmt = $connection->prepare($mtQuery);
-                    $stmt->bindParam(':movieID', $movie['movieID']);
-                    $stmt->execute();
-                    $movieTags = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                    foreach ($movieTags as $mTag) {
-                        $movieItem .= '<li>' . $mTag['name'] . '</li>';
-                    }
-                } catch (PDOException $e) {
-                    die("Database query failed: " . $e->getMessage());
-                }
-
-                $movieItem .= '      </ul> </p>
-                                <divider class="my-4">
-                                </divider>
-                                <p>Airings</p>
-                                timetable
-                            </div>
-                        </div>';
-
-                echo $movieItem;
-            };
-            ?>
-        </div>
-    </div>
-</div>
+    } catch (PDOException $e) {
+        die("Database query failed: " . $e->getMessage());
+    }
+}
+?>

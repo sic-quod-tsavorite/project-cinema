@@ -14,7 +14,7 @@ try { // Select 4 movies with isNews = 1
 
 <div class="d-flex">
     <?php foreach ($newMovies as $movie): ?>
-        <a class="banner-img" href="/project-cinema/movie/id/<?php echo $movie['movieID']; ?>">
+        <a class="banner-img" href="<?php echo $base_url; ?>/movie/id/<?php echo $movie['movieID']; ?>">
             <img src="<?php echo $movie['poster']; ?>" alt="<?php echo $movie['title']; ?>">
         </a>
     <?php endforeach; ?>
@@ -42,6 +42,24 @@ try { // Select 4 movies with isNews = 1
     </nav>
 
     <?php include_once "./views/content/tb_now_upcoming.php"; ?>
+    <div class="tab-content" id="npu-content">
+        <div id="nowplaying" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nowplaying-tab" tabindex="0">
+            <div class="container d-flex flex-column">
+                <?php
+                $connection = createConnection();
+                displayMovies(1, $connection);
+                ?>
+            </div>
+        </div>
+        <div id="upcoming" class="tab-pane fade" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
+            <div class="container d-flex flex-column">
+                <?php
+                $connection = createConnection();
+                displayMovies(2, $connection);
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php include_once "./constants/footer.php";    ?>

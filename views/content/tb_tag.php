@@ -9,9 +9,14 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Create_tag') {
         $query = "INSERT INTO tag (name, tagType, short_description) VALUES (:name, :tagType, :short_description)";
         $stmt = $connection->prepare($query);
 
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':tagType', $tagType);
-        $stmt->bindParam(':short_description', $short_description);
+        // Sanitize input
+        $washName = htmlspecialchars($name);
+        $washTagType = htmlspecialchars($tagType);
+        $washShort_description = htmlspecialchars($short_description);
+
+        $stmt->bindParam(':name', $washName);
+        $stmt->bindParam(':tagType', $washTagType);
+        $stmt->bindParam(':short_description', $washShort_description);
 
         $result = $stmt->execute();
 
@@ -65,9 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     try {
         $updateQuery = "UPDATE tag SET name = :name, tagType = :tagType, short_description = :short_description WHERE tagID = :tagId";
         $stmt = $connection->prepare($updateQuery);
-        $stmt->bindParam(':name', $newname);
-        $stmt->bindParam(':tagType', $newtagType);
-        $stmt->bindParam(':short_description', $newshort_description);
+
+        // Sanitize input
+        $washNewname = htmlspecialchars($newname);
+        $washNewtagType = htmlspecialchars($newtagType);
+        $washNewshort_description = htmlspecialchars($newshort_description);
+
+        $stmt->bindParam(':name', $washNewname);
+        $stmt->bindParam(':tagType', $washNewtagType);
+        $stmt->bindParam(':short_description', $washNewshort_description);
         $stmt->bindParam(':tagId', $tagIdToUpdate);
         $stmt->execute();
 

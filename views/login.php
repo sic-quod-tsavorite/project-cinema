@@ -2,7 +2,11 @@
 $page_title = "Login or sign up | Piximation Cinema";
 include_once "./constants/header.php";
 if (logged_in()) {
-	redirect_to("/project-cinema/");
+	redirect_to( $base_url );
+};
+
+if (isset($_GET['signup']) && $_GET['signup'] == 'success') {
+    echo "<p class='success-message'>User created successfully! You can now log in.</p>";
 };
 ?>
 

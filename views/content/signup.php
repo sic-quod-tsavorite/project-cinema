@@ -6,17 +6,23 @@ if (isset($_POST['submit'])) { // Form has been submitted.
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
+    // Sanitize password
+    $washPassword = htmlspecialchars($password);
+
     // Hash the password with bcrypt and cost factor
     $iterations = ['cost' => 15];
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT, $iterations);
+    $hashed_password = password_hash($washPassword, PASSWORD_BCRYPT, $iterations);
 
     try {
         // Prepare the SQL query to insert user
         $query = "INSERT INTO useraccounts (username, password) VALUES (:username, :hashed_password)";
         $stmt = $connection->prepare($query);
 
+        // Sanitize username
+        $washUsername = htmlspecialchars($username);
+
         // Bind parameters
-        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':username', $washUsername);
         $stmt->bindParam(':hashed_password', $hashed_password);
 
         // Execute the query
@@ -24,6 +30,8 @@ if (isset($_POST['submit'])) { // Form has been submitted.
 
         if ($result) {
             $message = "User Created.";
+            header("Location: " . $base_url . "/login?signup=success"); 
+            exit();
         } else {
             $message = "User could not be created.";
         }
@@ -38,7 +46,7 @@ if (!empty($message)) {
 ?>
 <h2>Create New User</h2>
 
-<form action="/project-cinema/login" method="post">
+<form action="<?php echo $base_url;?>/login?signup=success" method="post">
     Username:
     <input type="text" name="username" maxlength="30" value="" />
     Password:

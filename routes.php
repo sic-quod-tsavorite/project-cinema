@@ -14,6 +14,7 @@ get('/project-cinema/movie/id/$id', 'views/film-page.php');
 // Login page and post action for login
 get('/project-cinema/login', 'views/login.php');
 post('/project-cinema/login', 'views/login.php');
+post('/project-cinema/login?signup=success', 'views/login.php');
 
 // Signup "page" and post action for signup
 get('/project-cinema/logout', 'views/content/signout.php');
