@@ -37,7 +37,7 @@ try {
 
 // Junction with movietags table
 try {
-    $query = "SELECT t.name
+    $query = "SELECT t.name, t.tagID
               FROM tag t
               INNER JOIN movietags mt ON t.tagID = mt.tagID
               WHERE mt.movieID = :movieID";
@@ -72,7 +72,9 @@ try {
         <h3>Genre:</h3>
         <ul>
             <?php foreach ($tags as $tag): ?>
-                <li><?php echo $tag['name']; ?></li>
+                <li>
+                    <?php echo '<a class="link-offset-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="' . $base_url . '/tag/id/' . $tag['tagID'] . '">' . $tag['name'] . '</a>' ?>
+                </li>
             <?php endforeach; ?>
         </ul>
     </div>
