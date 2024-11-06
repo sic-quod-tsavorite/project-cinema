@@ -1,5 +1,6 @@
 <?php require_once("././includes/functions/functions.php");
-include_once "./constants/header.php";
+require_once("./includes/functions/connection.php");
+require_once("./includes/functions/session.php");
 ?>
 <?php
 // Four steps to closing a session
@@ -19,5 +20,5 @@ if (isset($_COOKIE[session_name()])) {
 // 4. Destroy the session
 session_destroy();
 
-redirect_to( $base_url );
+redirect_to($base_url);
 ?>
