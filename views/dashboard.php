@@ -1,13 +1,17 @@
 <?php
 $page_title = "Admin Dashboard | Piximation Cinema";
-include_once "./constants/header.php";
+include_once "./constants/pre-html.php";
 if (logged_in()) {
     if (!$isAdmin == 0) { //if user is not admin redirect to account page
-        redirect_to("' $base_url '/account-page");
+        header("Location: $base_url/account-page");
+	    exit;
     };
 } else { //if user is not logged in redirect to login page
-    redirect_to("' $base_url '/login");
+    header("Location: $base_url/login");
+	exit;
 };
+
+include_once "./constants/header.php";
 ?>
 
 <h1>

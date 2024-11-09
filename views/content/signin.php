@@ -26,7 +26,8 @@ if (isset($_POST['submit'])) { // Form has been submitted.
 				// Username/password authenticated
 				$_SESSION['user_id'] = $found_user['userID'];
 				$_SESSION['user'] = $found_user['username'];
-				redirect_to( $base_url );
+				header("Location: $base_url");
+				exit;
 			} else {
 				// Password is incorrect
 				$message = "Username/password combination incorrect.<br />

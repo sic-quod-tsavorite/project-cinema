@@ -1,13 +1,16 @@
 <?php
 $page_title = "Account Page | Piximation Cinema";
-include_once "./constants/header.php";
+include_once "./constants/pre-html.php";
 if (logged_in()) {
     if ($isAdmin == 0) { //if user is admin redirect to admin board
-        redirect_to("' $base_url '/admin-board");
+        header("Location: $base_url/admin-board");
+	    exit;
     };
 } else { //if user is not logged in redirect to login page
-    redirect_to("' $base_url '/login");
+    header("Location: $base_url/login");
+	exit;
 };
+include_once "./constants/header.php";
 ?>
 
 <h1>

@@ -2,7 +2,7 @@
 // Dynamic page for movies
 
 // Require and establish connection earlier to create page title
-require_once("./includes/functions/connection.php");
+include_once "./constants/pre-html.php";
 $connection = createConnection();
 
 // Select the movie based on the $id from routes.php

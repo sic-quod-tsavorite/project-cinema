@@ -238,8 +238,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt->bindParam(':movieId', $movieIdToDelete);
         $stmt->execute();
 
-        header("Location: " . $base_url . "/admin-board");
-        exit();
+        header("Location: $base_url/admin-board");
+        exit;
     } catch (PDOException $e) {
         $movieMessage = "Error deleting movie: " . $e->getMessage();
     }
@@ -364,8 +364,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     } catch (PDOException $e) {
         $movieMessage = "Error updating movie: " . $e->getMessage();
     }
-    header("Location: " . $base_url . "/admin-board");
-    exit();
+    header("Location: $base_url/admin-board");
+    exit;
 }
 
 // Function for file uploads in edit/update
@@ -442,7 +442,7 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
 <div class="container">
     <h1>Movies:</h1>
     <!-- Create movie form -->
-    <form action="/project-cinema/admin-board" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo $base_url; ?>/admin-board" method="POST" enctype="multipart/form-data">
         <label for="title">Title:</label>
         <input type="text" name="title"><br>
 
@@ -635,7 +635,7 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
 
                 <span class="badge text-bg-secondary">ID: <?php echo $movie['movieID']; ?></span>
 
-                <form action="/project-cinema/admin-board" method="POST" style="display: inline;">
+                <form action="<?php echo $base_url; ?>/admin-board" method="POST" style="display: inline;">
                     <input type="hidden" name="movie_id" value="<?php echo $movie['movieID']; ?>">
                     <input type="hidden" name="action" value="delete_movie">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -653,7 +653,7 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="/project-cinema/admin-board" method="POST" style="display: inline;" class="modal-body" enctype="multipart/form-data">
+                                <form action="<?php echo $base_url; ?>/admin-board" method="POST" style="display: inline;" class="modal-body" enctype="multipart/form-data">
                                     <input type="hidden" name="movie_id" value="<?php echo $movie['movieID']; ?>">
                                     <input type="hidden" name="action" value="update_movie">
 

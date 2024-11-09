@@ -2,7 +2,7 @@
 // Dynamic page for Tags/Categories
 
 // Require and establish connection earlier to create page title
-require_once("./includes/functions/connection.php");
+include_once "./constants/pre-html.php";
 $connection = createConnection();
 
 // Select the tag based on the $id from routes.php

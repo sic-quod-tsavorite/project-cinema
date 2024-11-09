@@ -1,5 +1,6 @@
 <?php
 $page_title = "Piximation Cinema";
+include_once "./constants/pre-html.php";
 include_once "./constants/header.php";
 
 try { // Select 4 movies with isNews = 1
