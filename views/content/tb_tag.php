@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt->bindParam(':tagId', $tagIdToDelete);
         $stmt->execute();
 
-        header("Location: /project-cinema/admin-board");
+        header("Location: $base_url/admin-board");
         exit();
     } catch (PDOException $e) {
         $tagMessage = "Error deleting tag: " . $e->getMessage();
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt->bindParam(':tagId', $tagIdToUpdate);
         $stmt->execute();
 
-        header("Location: /project-cinema/admin-board");
+        header("Location: $base_url/admin-board");
         exit();
     } catch (PDOException $e) {
         $tagMessage = "Error updating tag: " . $e->getMessage();
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 <div class="container">
     <h1>tag:</h1>
 
-    <form action="/project-cinema/admin-board" method="POST">
+    <form action="<?php echo $base_url; ?>/admin-board" method="POST">
         <label for="name">Tag:</label>
         <input type="text" name="name">
         <label for="tagType">Tag Type:</label>
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                 <span class="btn btn-light disabled btn-sm">ID: <?php echo $tags['tagID']; ?></span>
 
                 <!-- Delete Tag Form -->
-                <form action="/project-cinema/admin-board" method="POST" style="display: inline;">
+                <form action="<?php echo $base_url; ?>/admin-board" method="POST" style="display: inline;">
                     <input type="hidden" name="tag_id" value="<?php echo $tags['tagID']; ?>">
                     <input type="hidden" name="action" value="delete_tag">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
-                            <form action="/project-cinema/admin-board" method="POST" style="display: inline;" class="modal-body">
+                            <form action="<?php echo $base_url; ?>/admin-board" method="POST" style="display: inline;" class="modal-body">
                                 <input type="hidden" name="tag_id" value="<?php echo $tags['tagID']; ?>">
                                 <input type="hidden" name="action" value="update_tag">
                                 <input type="text" name="name" value="<?php echo $tags['name']; ?>" placeholder="New Tag Name" required>
