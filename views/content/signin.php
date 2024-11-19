@@ -53,11 +53,23 @@ if (!empty($message)) {
 }
 ?>
 
-<h2>Please login</h2>
-<form action="<?php echo $base_url;?>/login" method="post">
-	Username:
-	<input type="text" name="username" maxlength="30" value="" />
-	Password:
-	<input type="password" name="password" maxlength="30" value="" />
-	<input type="submit" name="submit" value="Login" />
+<h2 class="text-center mb-3 mt-5">Please login</h2>
+<form action="<?php echo $base_url; ?>/login" method="post" class="container p-5">
+	<div class="mb-3">
+		<label for="email" class="form-label">Email:</label>
+		<input type="text" name="username" maxlength="255" value="" class="form-control" data-bs-toggle="tooltip" data-bs-title="example@email.com" />
+	</div>
+
+	<div class="mb-4">
+		<label for="password" class="form-label">Password:</label>
+		<div class="input-group mb-3">
+			<input type="password" name="password" id="password-in" maxlength="255" value="" class="form-control rounded-start" />
+			<div class="input-group-text">
+				<input type="checkbox" class="btn-check" id="psw-check-in" autocomplete="off">
+				<label id="toggle-password-in" class="btn btn-transparent btn-sm rounded border-light" for="psw-check-in"><i class="bi bi-eye-fill"></i></label>
+			</div>
+		</div>
+	</div>
+
+	<input type="submit" name="submit" value="Login" class="btn btn-primary mb-4 px-3" />
 </form>

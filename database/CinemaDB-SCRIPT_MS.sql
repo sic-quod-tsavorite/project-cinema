@@ -15,6 +15,11 @@ CREATE TABLE Tag (
     short_description VARCHAR(255)
 ) ENGINE=InnoDB;
 
+CREATE TABLE CinemaHalls (
+  cinemaHallID INT PRIMARY KEY,
+  name VARCHAR(50),
+  seats INT
+) ENGINE=InnoDB;
 
 CREATE TABLE Movies (
     movieID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -28,6 +33,16 @@ CREATE TABLE Movies (
     director VARCHAR(255),
     isNews INT,
     now_upcoming INT
+) ENGINE=InnoDB;
+
+CREATE TABLE AirMovieShowings (
+    amsID INT PRIMARY KEY,
+    cinemaHallID INT,
+    movieID INT,
+    showDate DATE,
+    showTime TIME,
+    FOREIGN KEY (cinemaHallID) REFERENCES CinemaHalls(cinemaHallID),
+    FOREIGN KEY (movieID) REFERENCES Movies(movieID)
 ) ENGINE=InnoDB;
 
 CREATE TABLE ActorRole (
