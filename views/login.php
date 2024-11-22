@@ -41,4 +41,5 @@ if (isset($_GET['signup']) && $_GET['signup'] == 'success') {
 	</div>
 </div>
 
+<script src="<?php echo $base_url; ?>/includes/scripts/lg_script.js"></script>
 <?php include_once "./constants/footer.php";    ?>

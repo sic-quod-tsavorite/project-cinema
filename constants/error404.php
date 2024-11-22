@@ -1,5 +1,6 @@
 <?php
 $page_title = "Error 404";
+include_once "./constants/pre-html.php";
 include_once "header.php";
 ?>
 

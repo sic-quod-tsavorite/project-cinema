@@ -53,4 +53,5 @@ include_once "./constants/header.php";
     </div>
 </div>
 
+<script src="<?php echo $base_url; ?>/includes/scripts/ad_script.js"></script>
 <?php include_once "./constants/footer.php"; ?>

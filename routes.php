@@ -22,6 +22,10 @@ post('/project-cinema', 'views/content/signout.php');
 
 // Account page for users
 get('/project-cinema/account-page', 'views/account.php');
+post('/project-cinema/account-page', 'views/account.php');
+post('/project-cinema/account-page?update=pfp', 'views/account.php');
+post('/project-cinema/account-page?update=psw', 'views/account.php');
+post('/project-cinema/login?user=deleted', 'views/login.php');
 
 // Admin board for admins and post actions
 get('/project-cinema/admin-board', 'views/dashboard.php');
