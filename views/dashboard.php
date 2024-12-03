@@ -32,7 +32,12 @@ include_once "./constants/header.php";
                 <h4 class="mt-1 pe-none">|</h4>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link"
-                        data-bs-toggle="tab" data-bs-target="#cinemas" type="button" role="tab" aria-controls="cinemas" aria-selected="false">Cinemas</button>
+                        data-bs-toggle="tab" data-bs-target="#cinemas" type="button" role="tab" aria-controls="cinemas" aria-selected="false">Halls</button>
+                </li>
+                <h4 class="mt-1 pe-none">|</h4>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                        data-bs-toggle="tab" data-bs-target="#airmovie" type="button" role="tab" aria-controls="airmovie" aria-selected="false">Air Movie Showings</button>
                 </li>
             </ul>
         </div>
@@ -49,6 +54,9 @@ include_once "./constants/header.php";
         </div>
         <div id="cinemas" class="tab-pane fade" role="tabpanel" aria-labelledby="cinemas-tab" tabindex="0">
             <?php include_once "content/tb_cinemahalls.php"; ?>
+        </div>
+        <div id="airmovie" class="tab-pane fade" role="tabpanel" aria-labelledby="airmovie-tab" tabindex="0">
+            <?php include_once "content/tb_ams.php"; ?>
         </div>
     </div>
 </div>

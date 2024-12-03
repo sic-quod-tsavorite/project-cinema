@@ -1,15 +1,4 @@
 <?php
-$page_title = "Cinema Halls | Piximation Cinema";
-
-include_once "./constants/pre-html.php";
-
-if (!logged_in()) {
-    header("Location: $base_url?signup=failed");
-    exit;
-}
-
-include_once "./constants/header.php";
-
 /* Create Cinema Hall */
 if (isset($_POST['submit']) && $_POST['submit'] == 'Add Cinema Hall') {
     $name = trim($_POST['name']);
