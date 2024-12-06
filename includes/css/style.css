@@ -1,3 +1,8 @@
+.wmc {
+  width: -moz-max-content;
+  width: max-content;
+}
+
 #pg-content {
   padding-top: 102px;
 }
@@ -145,6 +150,45 @@ footer {
   position: absolute;
   top: 0;
   pointer-events: none;
+}
+#film-hero .m-title {
+  font-size: 5.5vw;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: -3px 0 #28dbfe, 3px 0 #49d362, 0 0 40px #ff6ab2;
+}
+#film-hero .m-desc {
+  font-weight: bold;
+  text-shadow: 0 0 20px #000;
+  font-size: 1.2rem;
+}
+#film-hero .m-stars {
+  background-color: hsla(330, 42%, 14%, 0.5);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+#film-hero .m-genre {
+  background-color: hsla(330, 42%, 14%, 0.5);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+  width: -moz-max-content;
+  width: max-content;
+  margin: auto;
+}
+#film-hero .m-genre h3 {
+  text-align: center;
+  text-transform: uppercase;
+}
+#film-hero .m-genre div {
+  display: flex;
+  justify-content: center;
+  width: 35vw;
+  margin: auto;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+#film-hero .m-genre div a {
+  width: 30%;
 }
 
 /*.tag-page {

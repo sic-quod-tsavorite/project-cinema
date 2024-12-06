@@ -1,4 +1,8 @@
 // Global
+.wmc {
+  width: max-content;
+}
+
 #pg-content {
   padding-top: 102px;
 }
@@ -153,6 +157,42 @@ footer {
     position: absolute;
     top: 0;
     pointer-events: none;
+  }
+  .m-title {
+    font-size: 5.5vw;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: -3px 0 #28dbfe, 3px 0 #49d362, 0 0 40px #ff6ab2;
+  }
+  .m-desc {
+    font-weight: bold;
+    text-shadow: 0 0 20px #000;
+    font-size: 1.2rem;
+  }
+  .m-stars {
+    background-color: hsla(330, 42%, 14%, 0.5);
+    backdrop-filter: blur(5px);
+  }
+  .m-genre {
+    background-color: hsla(330, 42%, 14%, 0.5);
+    backdrop-filter: blur(5px);
+    width: max-content;
+    margin: auto;
+    h3 {
+      text-align: center;
+      text-transform: uppercase;
+    }
+    div {
+      display: flex;
+      justify-content: center;
+      width: 35vw;
+      margin: auto;
+      flex-wrap: wrap;
+      gap: 10px;
+      a {
+        width: 30%;
+      }
+    }
   }
 }
 

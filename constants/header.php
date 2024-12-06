@@ -15,7 +15,7 @@
     <div id="pg-content">
         <nav class="navbar navbar-expand-lg fixed-top border-bottom border-light-subtle" id="header">
             <div class="container-fluid">
-                <div>
+                <div class="w-100">
                     <a class="navbar-brand pix-logo" href="/project-cinema">
                         <img src="<?php echo $base_url; ?>/includes/assets/logo.png" alt="">
                         Piximation
@@ -36,7 +36,7 @@
                     $navitems = '
                             <div id="categorys">
                                 <div>
-                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">';
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 wmc">';
 
                     // Loop through the fetched tags and create list items
                     foreach ($mainTags as $tag) {
@@ -55,7 +55,7 @@
                     };
                     ?>
                 </div>
-                <div>
+                <div class="w-100 d-flex justify-content-end">
                     <?php //logic for login button
                     if (!logged_in()) {
                         echo '<a class="btn btn-primary ms-2" type="button" href="' . $base_url . '/login">Log in</a>';

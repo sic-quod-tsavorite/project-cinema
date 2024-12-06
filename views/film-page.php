@@ -50,7 +50,8 @@ try {
 }
 
 // AirMovieShowings
-function getMovieShowingsByDate($id, $selectedDate, $connection) {
+function getMovieShowingsByDate($id, $selectedDate, $connection)
+{
     try {
         $query = "SELECT am.amsID, c.name as cinemaHallName, m.title as movieTitle, am.showDate, am.showTime 
                   FROM airmovieshowings am 
@@ -71,30 +72,30 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
 
 <div id="film-hero">
     <img class="z-n1" src="<?php echo $base_url . '/' . $movies[0]['heroimg']; ?>" alt="">
-    <div class="container d-flex">
-        <div>
-            <h2><?php echo $movies[0]['title']; ?></h2>
-            <p><?php echo $movies[0]['description']; ?></p>
+    <h1 class="m-title pt-5"><?php echo $movies[0]['title']; ?></h1>
+    <div class="container d-flex py-4">
+        <div class="d-flex flex-column justify-content-between">
+            <p class="m-desc"><?php echo $movies[0]['description']; ?></p>
+            <div class="m-stars rounded-3 p-3">
+                <h3>Starring:</h3>
+                <ul>
+                    <?php foreach ($actors as $actor): ?>
+                        <li><?php echo $actor['first_name'] . ' ' . $actor['last_name'] . ' - As: ' . $actor['role']; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
-        <video height="450" controls autoplay loop muted>
+        <video width="65%" controls autoplay loop muted class="rounded-3 ms-5">
             <source src="<?php echo $base_url . '/' . $movies[0]['trailer']; ?>" type="video/mp4">
         </video>
     </div>
-    <div>
-        <h3>Starring:</h3>
-        <ul>
-            <?php foreach ($actors as $actor): ?>
-                <li><?php echo $actor['first_name'] . ' ' . $actor['last_name'] . ' - As: ' . $actor['role']; ?></li>
-            <?php endforeach; ?>
-        </ul>
-        <h3>Genre:</h3>
-        <ul>
+    <div class="m-genre rounded-3 p-3 mt-4">
+        <h3>Genre</h3>
+        <div>
             <?php foreach ($tags as $tag): ?>
-                <li>
-                    <?php echo '<a class="link-offset-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="' . $base_url . '/tag/id/' . $tag['tagID'] . '">' . $tag['name'] . '</a>' ?>
-                </li>
+                    <?php echo '<a class="btn btn-secondary rounded-1" href="' . $base_url . '/tag/id/' . $tag['tagID'] . '">' . $tag['name'] . '</a>' ?>
             <?php endforeach; ?>
-        </ul>
+        </div>
     </div>
     <div class="container bg-primary-subtle rounded-3 p-5 my-5">
         <nav class="navbar navbar-expand-lg">
@@ -212,14 +213,14 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
         <div class="tab-content" id="npu-content">
             <div id="day1" class="tab-pane fade show active" role="tabpanel" aria-labelledby="day1-tab" tabindex="0">
                 <h4>Today: </h4>
-                <?php 
+                <?php
                 $date = date_create(date("Y-m-d"));
                 $chosenDate = date_format($date, "Y-m-d");
 
                 $movieShowings = getMovieShowingsByDate($id, $chosenDate, $connection);
 
                 // Sort the movie showings by showTime
-                usort($movieShowings, function($a, $b) {
+                usort($movieShowings, function ($a, $b) {
                     return $a['showTime'] <=> $b['showTime'];
                 });
 
@@ -230,7 +231,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
             </div>
             <div id="day2" class="tab-pane fade" role="tabpanel" aria-labelledby="day2-tab" tabindex="0">
                 <h4>Tomorrow: </h4>
-                <?php 
+                <?php
                 $date = date_create(date("Y-m-d"));
                 date_modify($date, "+1 day");
                 $chosenDate = date_format($date, "Y-m-d");
@@ -238,7 +239,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                 $movieShowings = getMovieShowingsByDate($id, $chosenDate, $connection);
 
                 // Sort the movie showings by showTime
-                usort($movieShowings, function($a, $b) {
+                usort($movieShowings, function ($a, $b) {
                     return $a['showTime'] <=> $b['showTime'];
                 });
 
@@ -253,7 +254,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                     date_modify($date, "+2 days");
                     echo date_format($date, "l d. F");
                     ?></h4>
-                <?php 
+                <?php
                 $date = date_create(date("Y-m-d"));
                 date_modify($date, "+2 days");
                 $chosenDate = date_format($date, "Y-m-d");
@@ -261,7 +262,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                 $movieShowings = getMovieShowingsByDate($id, $chosenDate, $connection);
 
                 // Sort the movie showings by showTime
-                usort($movieShowings, function($a, $b) {
+                usort($movieShowings, function ($a, $b) {
                     return $a['showTime'] <=> $b['showTime'];
                 });
 
@@ -276,7 +277,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                     date_modify($date, "+3 days");
                     echo date_format($date, "l d. F");
                     ?></h4>
-                <?php 
+                <?php
                 $date = date_create(date("Y-m-d"));
                 date_modify($date, "+3 days");
                 $chosenDate = date_format($date, "Y-m-d");
@@ -284,7 +285,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                 $movieShowings = getMovieShowingsByDate($id, $chosenDate, $connection);
 
                 // Sort the movie showings by showTime
-                usort($movieShowings, function($a, $b) {
+                usort($movieShowings, function ($a, $b) {
                     return $a['showTime'] <=> $b['showTime'];
                 });
 
@@ -299,7 +300,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                     date_modify($date, "+4 days");
                     echo date_format($date, "l d. F");
                     ?></h4>
-                <?php 
+                <?php
                 $date = date_create(date("Y-m-d"));
                 date_modify($date, "+4 days");
                 $chosenDate = date_format($date, "Y-m-d");
@@ -307,7 +308,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                 $movieShowings = getMovieShowingsByDate($id, $chosenDate, $connection);
 
                 // Sort the movie showings by showTime
-                usort($movieShowings, function($a, $b) {
+                usort($movieShowings, function ($a, $b) {
                     return $a['showTime'] <=> $b['showTime'];
                 });
 
@@ -322,7 +323,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                     date_modify($date, "+5 days");
                     echo date_format($date, "l d. F");
                     ?></h4>
-                <?php 
+                <?php
                 $date = date_create(date("Y-m-d"));
                 date_modify($date, "+5 days");
                 $chosenDate = date_format($date, "Y-m-d");
@@ -330,7 +331,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                 $movieShowings = getMovieShowingsByDate($id, $chosenDate, $connection);
 
                 // Sort the movie showings by showTime
-                usort($movieShowings, function($a, $b) {
+                usort($movieShowings, function ($a, $b) {
                     return $a['showTime'] <=> $b['showTime'];
                 });
 
@@ -345,7 +346,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                     date_modify($date, "+6 days");
                     echo date_format($date, "l d. F");
                     ?></h4>
-                <?php 
+                <?php
                 $date = date_create(date("Y-m-d"));
                 date_modify($date, "+6 days");
                 $chosenDate = date_format($date, "Y-m-d");
@@ -353,7 +354,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection) {
                 $movieShowings = getMovieShowingsByDate($id, $chosenDate, $connection);
 
                 // Sort the movie showings by showTime
-                usort($movieShowings, function($a, $b) {
+                usort($movieShowings, function ($a, $b) {
                     return $a['showTime'] <=> $b['showTime'];
                 });
 
