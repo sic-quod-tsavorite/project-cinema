@@ -39,6 +39,8 @@ function displayMovies($nowUpcomingValue, $connection, $tagID = null) {
                     </a>
                     <h5><?php echo $hours; ?>h <?php echo $minutes; ?>min</h5>
                     <p>Director: <?php echo $movie['director']; ?></p>
+                    <divider class="my-4">
+                    </divider>
                     <p>Actor:
                         <ul>
                             <?php
@@ -84,10 +86,6 @@ function displayMovies($nowUpcomingValue, $connection, $tagID = null) {
                             ?>
                         </ul>
                     </p>
-                    <divider class="my-4">
-                    </divider>
-                    <p>Airings</p>
-                    timetable 
                 </div>
             </div>
             <?php
