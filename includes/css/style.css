@@ -91,6 +91,10 @@ footer {
   display: none;
 }
 
+.adm-movie-content {
+  margin-bottom: 3rem;
+}
+
 .alert.show {
   display: block !important;
 }

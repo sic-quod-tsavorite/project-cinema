@@ -44,7 +44,7 @@ CREATE TABLE Movies (
 ) ENGINE=InnoDB;
 
 CREATE TABLE AirMovieShowings (
-    amsID INT PRIMARY KEY,
+    amsID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     cinemaHallID INT,
     movieID INT,
     showDate DATE,

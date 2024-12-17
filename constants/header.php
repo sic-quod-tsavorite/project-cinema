@@ -22,7 +22,7 @@
         <nav class="navbar navbar-expand-lg fixed-top border-bottom border-light-subtle" id="header">
             <div class="container-fluid">
                 <div class="w-100">
-                    <a class="navbar-brand pix-logo" href="/project-cinema">
+                    <a class="navbar-brand pix-logo" href="<?php echo $base_url; ?>">
                         <img src="<?php echo $base_url; ?>/includes/assets/logo.png" alt="">
                         Piximation
                     </a>

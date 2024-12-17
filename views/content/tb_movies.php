@@ -549,7 +549,7 @@ function handleFileUpload($fieldName, $subfolder, $movieId)
     ?>
     <ul>
         <?php foreach ($movies as $movie): ?>
-            <li>
+            <li class="adm-movie-content">
                 <?php
                 echo '<p><b>' . $movie['title'] . '</b></p>';
                 $hours = floor($movie['length'] / 60);
