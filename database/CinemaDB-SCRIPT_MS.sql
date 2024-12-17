@@ -16,9 +16,17 @@ CREATE TABLE Tag (
 ) ENGINE=InnoDB;
 
 CREATE TABLE CinemaHalls (
-  cinemaHallID INT PRIMARY KEY,
+  cinemaHallID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   name VARCHAR(50),
   seats INT
+) ENGINE=InnoDB;
+
+CREATE TABLE HallSeats (
+  seatID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  cinemaHallID INT,
+  rowName INT,
+  seatRowNumber INT,
+  FOREIGN KEY (cinemaHallID) REFERENCES CinemaHalls(cinemaHallID)
 ) ENGINE=InnoDB;
 
 CREATE TABLE Movies (
@@ -66,7 +74,27 @@ CREATE TABLE UserAccounts (
     userID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     accountRank INT DEFAULT 1,
     username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    profile_picture VARCHAR(255)
+) ENGINE=InnoDB;
+
+CREATE TABLE Bookings (
+    bookingID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    userID INT NOT NULL,
+    amsID INT NOT NULL,
+    bookedSeats INT NOT NULL,
+    FOREIGN KEY (userID) REFERENCES UserAccounts(userID),
+    FOREIGN KEY (amsID) REFERENCES AirMovieShowings(amsID)
+) ENGINE=InnoDB;
+
+CREATE TABLE SeatBookings (
+    seatBookingID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    bookingID INT NOT NULL,
+    seatID INT NOT NULL,
+    amsID INT NOT NULL,
+    FOREIGN KEY (bookingID) REFERENCES Bookings(bookingID),
+    FOREIGN KEY (seatID) REFERENCES HallSeats(seatID),
+    FOREIGN KEY (amsID) REFERENCES AirMovieShowings(amsID)
 ) ENGINE=InnoDB;
 
 -- DATA --

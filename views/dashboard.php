@@ -53,7 +53,7 @@ include_once "./constants/header.php";
             <?php include_once "content/tb_movies.php"; ?>
         </div>
         <div id="cinemas" class="tab-pane fade" role="tabpanel" aria-labelledby="cinemas-tab" tabindex="0">
-            <?php include_once "content/tb_cinemahalls.php"; ?>
+            <?php include_once "content/tb_cinemahalls_simple.php"; ?>
         </div>
         <div id="airmovie" class="tab-pane fade" role="tabpanel" aria-labelledby="airmovie-tab" tabindex="0">
             <?php include_once "content/tb_ams.php"; ?>

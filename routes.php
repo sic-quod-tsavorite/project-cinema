@@ -5,11 +5,15 @@ require_once __DIR__ . '/router.php';
 // Front page
 get('/project-cinema', 'views/index.php');
 
-// Dynamic page for movies make $id variable
+// Dynamic page for tags make $id variable
 get('/project-cinema/tag/id/$id', 'views/tag-page.php');
 
-// Dynamic page for tags make $id variable
+// Dynamic page for movies make $id variable
 get('/project-cinema/movie/id/$id', 'views/film-page.php');
+
+// Dynamic page for bookings make $id variable
+get('/project-cinema/booking/showing/$id', 'views/booking_simple.php');
+post('/project-cinema/booking/showing/$id', 'views/booking_simple.php');
 
 // Login page and post action for login
 get('/project-cinema/login', 'views/login.php');

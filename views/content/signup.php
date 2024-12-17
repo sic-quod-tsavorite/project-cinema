@@ -76,4 +76,5 @@ if (isset($_POST['submit'])) { // Form has been submitted.
         </div>
     </div>
     <input type="submit" name="submit" value="Create" class="btn btn-primary mb-4 px-3" />
+    <input type="hidden" class="g-recaptcha" data-sitekey="reCAPTCHA_site_key" data-callback='onSubmit' data-action='submit'>
 </form>

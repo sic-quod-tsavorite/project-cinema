@@ -225,7 +225,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection)
                 });
 
                 foreach ($movieShowings as $movieShowing) {
-                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2">' . $movieShowing['showTime'] . '</button>';
+                    echo '<a type="button" class="btn btn-secondary rounded-1 m-2" href="' . $base_url . '/booking/showing/' . $movieShowing['amsID'] . '">' . $movieShowing['showTime'] . '</a>';
                 }
                 ?>
             </div>
@@ -244,7 +244,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection)
                 });
 
                 foreach ($movieShowings as $movieShowing) {
-                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2">' . $movieShowing['showTime'] . '</button>';
+                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2" href="' . $base_url . '/booking/showing/' . $movieShowing['amsID'] . '">' . $movieShowing['showTime'] . '</button>';
                 }
                 ?>
             </div>
@@ -267,7 +267,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection)
                 });
 
                 foreach ($movieShowings as $movieShowing) {
-                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2">' . $movieShowing['showTime'] . '</button>';
+                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2" href="' . $base_url . '/booking/showing/' . $movieShowing['amsID'] . '">' . $movieShowing['showTime'] . '</button>';
                 }
                 ?>
             </div>
@@ -290,7 +290,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection)
                 });
 
                 foreach ($movieShowings as $movieShowing) {
-                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2">' . $movieShowing['showTime'] . '</button>';
+                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2" href="' . $base_url . '/booking/showing/' . $movieShowing['amsID'] . '">' . $movieShowing['showTime'] . '</button>';
                 }
                 ?>
             </div>
@@ -313,7 +313,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection)
                 });
 
                 foreach ($movieShowings as $movieShowing) {
-                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2">' . $movieShowing['showTime'] . '</button>';
+                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2" href="' . $base_url . '/booking/showing/' . $movieShowing['amsID'] . '">' . $movieShowing['showTime'] . '</button>';
                 }
                 ?>
             </div>
@@ -336,7 +336,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection)
                 });
 
                 foreach ($movieShowings as $movieShowing) {
-                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2">' . $movieShowing['showTime'] . '</button>';
+                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2" href="' . $base_url . '/booking/showing/' . $movieShowing['amsID'] . '">' . $movieShowing['showTime'] . '</button>';
                 }
                 ?>
             </div>
@@ -359,7 +359,7 @@ function getMovieShowingsByDate($id, $selectedDate, $connection)
                 });
 
                 foreach ($movieShowings as $movieShowing) {
-                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2">' . $movieShowing['showTime'] . '</button>';
+                    echo '<button type="button" class="btn btn-secondary rounded-1 m-2" href="' . $base_url . '/booking/showing/' . $movieShowing['amsID'] . '">' . $movieShowing['showTime'] . '</button>';
                 }
                 ?>
             </div>
