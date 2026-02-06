@@ -108,11 +108,10 @@ class ExportStatic extends Command
 
     private function rewriteAssetUrls(string $html): string
     {
-        $appUrl = rtrim(config('app.url', 'http://localhost'), '/');
         $basePath = rtrim($this->option('base-path') ?: '/', '/') . '/';
 
-        // Strip the app URL from all references, leaving just the path
-        $html = str_replace($appUrl, '', $html);
+        // Strip any localhost URLs (with or without port)
+        $html = preg_replace('#https?://localhost(:\d+)?#', '', $html);
 
         // Inject <base> tag after <head> for correct relative path resolution
         $html = preg_replace(
