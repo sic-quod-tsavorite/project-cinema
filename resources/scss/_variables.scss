@@ -1,0 +1,20 @@
+// Bootstrap color overrides — Piximation Cinema brand
+$primary: #ff6ab2;
+$secondary: #49d362;
+$dark: #17090f;
+$light: #f5e7ee;
+
+// Custom accent color
+$accent: #28dbfe;
+
+// Add accent to the theme-colors map
+$custom-colors: (
+    "accent": $accent,
+);
+
+// Body defaults
+$body-bg: $dark;
+$body-color: $light;
+
+// Font
+$font-family-sans-serif: "Outfit", sans-serif;
